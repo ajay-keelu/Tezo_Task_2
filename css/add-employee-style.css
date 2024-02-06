@@ -1,0 +1,154 @@
+.employee-details {
+  padding: 15px 90px 15px 20px;
+  width: 100%;
+  min-height: 90%;
+}
+.employee-details > .title {
+  color: #1a1a1a;
+  padding: 10px;
+  font-weight: 700;
+}
+.employee-details .personal-information {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  height: 100%;
+}
+.personal-information .left-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0;
+  height: 100%;
+  width: 10%;
+}
+.personal-information .left-wrapper .img-wrapper {
+  width: fit-content;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.personal-information .left-wrapper button {
+  outline: none;
+  border: none;
+  font-weight: bold;
+  background: transparent;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 5px;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid transparent;
+}
+.personal-information .left-wrapper button:hover {
+  border: 1px solid lightgray;
+  background: rgba(120, 118, 118, 0.269);
+}
+.personal-information .right-wrapper {
+  width: 90%;
+}
+.right-wrapper .title {
+  color: #1a1a1a;
+  font-weight: 700;
+  padding: 10px 0 20px 0;
+}
+.input-form-element {
+  background: #fafbfc;
+  border: 2px solid #dfe1e6;
+  padding: 5px;
+  outline: none;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  color: #8993a6;
+  font-weight: 600;
+}
+.input-form-element:focus {
+  border: 2px solid #6cacff;
+}
+.input-form-element::placeholder {
+  color: #8993a6;
+}
+.employee-number {
+  display: flex;
+  flex-direction: column;
+}
+.employee-fullname {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 20px;
+}
+.employee-fullname .name {
+  display: flex;
+  flex-direction: column;
+}
+.employee-fullname .name input {
+  width: 240px;
+}
+.employee-number input {
+  width: 25%;
+}
+.employee-number label,
+.name label {
+  font-size: 12px;
+  color: #707580;
+  padding: 8px 0;
+  font-weight: 600;
+}
+.employment-information {
+  width: 100%;
+}
+
+.employment-information .details {
+  display: flex;
+  gap: 20px;
+}
+
+.employment-information .details .input-form {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+}
+.input-form label {
+  font-size: 14px;
+  color: #707580;
+  padding: 5px 0;
+}
+.employment-information .btn-wrapper {
+  width: 100%;
+  display: flex;
+  padding: 40px 60px 40px 0;
+  justify-content: flex-end;
+  gap: 40px;
+}
+.employment-information .btn-wrapper .cancel button {
+  background: #fbebeb;
+  color: #f55a5a;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+.employment-information .btn-wrapper .add-employee button {
+  border: none;
+  outline: none;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background: #f44848;
+  color: #ffffff;
+}
+.drop-down-arrow {
+  position: relative;
+}
+input[type="text"].input-form-element {
+  font-family: "Nunito sans", "FontAwesome", sans-serif;
+}

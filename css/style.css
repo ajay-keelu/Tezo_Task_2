@@ -28,6 +28,7 @@ body .container {
   position: sticky;
   top: 0;
   z-index: 11;
+  overflow-x: hidden;
 }
 /* sidebar css start */
 .sidebar .logo {
@@ -37,14 +38,37 @@ body .container {
   z-index: 10;
   background: #fff;
 }
+.sidebar-toggle #management .title span {
+  display: none;
+}
 .sidebar .logo img[alt="direction"] {
-  position: absolute;
-  right: -16px;
+  position: fixed;
+  left: 240px;
   width: 2rem;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
   z-index: 1;
-  top: 22px;
+  top: 18px;
+  scale: 0.8;
+}
+.sidebar-toggle .logo img[alt="direction"] {
+  left: 50px;
+  transform: rotate(180deg);
+}
+.sidebar-toggle #all > ul > li > a,
+.sidebar-toggle #management > ul > li > a {
+  padding: 3px 4px;
+}
+.sidebar-toggle #all .title,
+.sidebar-toggle #management .title {
+  padding: 5px 0;
+}
+.sidebar-toggle #all > ul,
+.sidebar-toggle #management > ul {
+  margin-left: 5px;
+}
+.sidebar-toggle + .main-content .search-bar .search-wrapper {
+  width: 72%;
 }
 /* sidebar all section */
 #all {
@@ -66,6 +90,19 @@ body .container {
   background: rgb(187, 194, 200);
   top: 49%;
   left: -10px;
+}
+.sidebar-toggle #management .title::before,
+.sidebar-toggle #all .title::before,
+.sidebar-toggle #install,
+.sidebar-toggle ul li a span,
+.sidebar-toggle ul li a::after {
+  display: none !important;
+}
+.sidebar-toggle + .main-content {
+  width: 97% !important;
+}
+.sidebar-toggle.sidebar {
+  width: 5%;
 }
 #all > ul {
   list-style-type: none;
@@ -463,9 +500,13 @@ body .container {
 .main-content .page .add-employee:hover {
   background: rgb(247, 116, 116);
 }
-.main-content .page .add-employee span {
+.main-content .page .add-employee a {
   color: rgb(254, 232, 232);
   text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
 }
 .main-content .filter-aplhabets {
   display: flex;
@@ -860,7 +901,7 @@ input[id="dropdown-select"] {
     display: none;
   }
   .table-content .table-body {
-    height: 49.4vh;
+    height: 49vh;
   }
   .main-content .page-left p {
     display: none;
@@ -944,7 +985,6 @@ input[id="dropdown-select"] {
     left: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
     background: #ffffff;
   }
@@ -971,6 +1011,7 @@ input[id="dropdown-select"] {
     align-items: center;
     justify-content: flex-start;
     flex-wrap: wrap;
+    padding: 90px 0 0 0;
   }
   .mobile-filter-division-items .buttons-wrapper button {
     margin: 5px;
@@ -1008,5 +1049,8 @@ input[id="dropdown-select"] {
     align-items: center;
     gap: 10px;
     margin: 10px 0;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 10px 20px;
   }
 }

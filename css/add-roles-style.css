@@ -1,0 +1,55 @@
+.role-adder {
+  width: 100%;
+  padding: 20px 0;
+}
+.role-adder .title {
+  font-weight: 700;
+}
+.role-adder .role-department {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 20px 0;
+}
+.role-adder .role-detail {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  width: 30%;
+}
+.role-adder .role-detail label {
+  font-size: 12px;
+  padding: 5px 0;
+  font-weight: 600;
+}
+.role-adder .role-detail .input-form-element {
+  width: 100%;
+}
+.role-adder .btn-wrapper .add-employee button {
+  border: none;
+  outline: none;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background: #f44848;
+  color: #ffffff;
+}
+.role-adder .btn-wrapper .cancel button {
+  background: #fbebeb;
+  color: #f55a5a;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+.role-adder .btn-wrapper {
+  width: 100%;
+  display: flex;
+  padding: 40px 60px 40px 0;
+  justify-content: flex-end;
+  gap: 40px;
+}
