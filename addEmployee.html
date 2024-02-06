@@ -208,6 +208,8 @@
                       class="input-form-element"
                       type="text"
                       placeholder="Text"
+                      name="empno"
+                      onchange="changeData(this.value,this.name)"
                     />
                   </div>
                   <div class="employee-fullname">
@@ -217,6 +219,8 @@
                         class="input-form-element"
                         type="text"
                         placeholder="Text"
+                        name="firstname"
+                        onchange="changeData(this.value,this.name)"
                       />
                     </div>
                     <div class="name">
@@ -225,6 +229,8 @@
                         class="input-form-element"
                         type="text"
                         placeholder="Text"
+                        name="lastname"
+                        onchange="changeData(this.value,this.name)"
                       />
                     </div>
                     <div class="name">
@@ -235,6 +241,8 @@
                         onfocus="(this.type='date')"
                         onblur="(this.type='text')"
                         placeholder=" &#128197; select"
+                        name="dob"
+                        onchange="changeData(this.value,this.name)"
                       />
                     </div>
                   </div>
@@ -245,6 +253,8 @@
                         class="input-form-element"
                         type="text"
                         placeholder="joe.j@technovert.com"
+                        name="email"
+                        onchange="changeData(this.value,this.name)"
                       />
                     </div>
                     <div class="name">
@@ -253,6 +263,8 @@
                         class="input-form-element"
                         type="text"
                         placeholder="00000000000"
+                        name="mobile"
+                        onchange="changeData(this.value,this.name)"
                       />
                     </div>
                   </div>
@@ -262,32 +274,54 @@
                   <div class="details">
                     <div class="input-form">
                       <label>Joining Date</label>
-                      <input type="text" class="input-form-element" />
+                      <input
+                        type="text"
+                        class="input-form-element"
+                        name="joiningDate"
+                        onchange="changeData(this.value,this.name)"
+                      />
                     </div>
                     <div class="input-form">
                       <label>Location</label>
-                      <select class="input-form-element">
-                        <option value="">Hyderabad</option>
-                        <option value="">Banglore</option>
-                        <option value="">Vijayawada</option>
+                      <select
+                        class="input-form-element"
+                        name="location"
+                        onchange="changeData(this.value,this.name)"
+                      >
+                        <option value="">Select</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                        <option value="Banglore">Banglore</option>
+                        <option value="Vijayawada">Vijayawada</option>
                       </select>
                     </div>
                   </div>
                   <div class="details">
                     <div class="input-form">
                       <label>Job Title</label>
-                      <select class="input-form-element">
-                        <option value="">UX Designer</option>
-                        <option value="">Product Engineer</option>
-                        <option value="">IT</option>
-                        <option value="">UI Designer</option>
+                      <select
+                        class="input-form-element"
+                        name="jobTitle"
+                        onchange="changeData(this.value,this.name)"
+                      >
+                        <option value="">Select</option>
+                        <option value="Ux Designer">UX Designer</option>
+                        <option value="Product Engineer">
+                          Product Engineer
+                        </option>
+                        <option value="IT">IT</option>
+                        <option value="UI Designer">UI Designer</option>
                       </select>
                     </div>
                     <div class="input-form">
                       <label>Department</label>
-                      <select class="input-form-element">
-                        <option value="">UI/UX</option>
-                        <option value="">IT</option>
+                      <select
+                        class="input-form-element"
+                        name="department"
+                        onchange="changeData(this.value,this.name)"
+                      >
+                        <option value="">Select</option>
+                        <option value="UI/UX">UI/UX</option>
+                        <option value="IT">IT</option>
                       </select>
                     </div>
                   </div>
@@ -297,9 +331,9 @@
                       <input
                         type="text"
                         class="input-form-element"
-                        name=""
-                        id=""
+                        name="assignManager"
                         placeholder="Search"
+                        onchange="changeData(this.value,this.name)"
                       />
                     </div>
                     <div class="input-form">
@@ -307,18 +341,18 @@
                       <input
                         type="text"
                         class="input-form-element drop-down-arrow"
-                        name=""
-                        id=""
+                        name="assignProject"
                         placeholder="Search"
+                        onchange="changeData(this.value,this.name)"
                       />
                     </div>
                   </div>
                   <div class="btn-wrapper">
                     <div class="cancel">
-                      <button type="reset">Cancel</button>
+                      <button>Cancel</button>
                     </div>
                     <div class="add-employee">
-                      <button type="submit">Add Employee</button>
+                      <button class="form-add-employee">Add Employee</button>
                     </div>
                   </div>
                 </div>
