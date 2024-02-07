@@ -255,7 +255,7 @@
             Find all of your company's employee accounts and their associated
             roles.
           </p>
-          <div class="filter-aplhabets">
+          <div class="filter-buttons-wrapper filter-aplhabets">
             <button><img src="images/filter.png" alt="filter" /></button>
             <button>A</button><button>B</button><button>C</button>
             <button>D</button> <button>E</button><button>F</button
@@ -268,40 +268,63 @@
             ><button>Y</button><button>Z</button>
           </div>
           <div class="filter-content">
-            <div class="filter-bar">
-              <div class="left-item">
-                <div class="filter">
-                  <span>Filter</span>
-                  <label for="dropdown-select"
-                    ><img src="images/filter-bar.png" alt="filter"
-                  /></label>
-                  <input type="checkbox" id="dropdown-select" />
-                  <div class="dropdown-select">
-                    <select name="" id="" class="select-item status">
-                      <option value="">Status</option>
-                      <option value="">Active</option>
-                      <option value="">In Active</option>
-                    </select>
-                    <select name="" id="" class="select-item location">
-                      <option value="">Location</option>
-                      <option value="">Vijayawada</option>
-                      <option value="">Hyderabad</option>
-                      <option value="">Banglore</option>
-                    </select>
-                    <select name="" id="" class="select-item department">
-                      <option value="">Department</option>
-                      <option value="">Product Engg</option>
-                      <option value="">IT</option>
-                      <option value="">UIUX</option>
-                    </select>
+            <form>
+              <div class="filter-bar">
+                <div class="left-item">
+                  <div class="filter">
+                    <span>Filter</span>
+                    <label for="dropdown-select"
+                      ><img src="images/filter-bar.png" alt="filter"
+                    /></label>
+                    <input type="checkbox" id="dropdown-select" />
+                    <div class="dropdown-select">
+                      <select
+                        name="status"
+                        class="select-item status"
+                        onchange="EmployDropdown(this.value,this.name)"
+                      >
+                        <option value="">Status</option>
+                        <option value="Active">Active</option>
+                        <option value="In Active">In Active</option>
+                      </select>
+                      <select
+                        name="location"
+                        onchange="EmployDropdown(this.value,this.name)"
+                        class="select-item location"
+                      >
+                        <option value="">Location</option>
+                        <option value="Vijayawada">Vijayawada</option>
+                        <option value="Hyderabad">Hyderabad</option>
+                        <option value="Banglore">Banglore</option>
+                      </select>
+                      <select
+                        name="department"
+                        onchange="EmployDropdown(this.value,this.name)"
+                        class="select-item department"
+                      >
+                        <option value="">Department</option>
+                        <option value="Product Engg">Product Engg</option>
+                        <option value="IT">IT</option>
+                        <option value="UI/UX">UI/UX</option>
+                      </select>
+                    </div>
                   </div>
                 </div>
+                <div class="right-item">
+                  <input
+                    type="reset"
+                    class="reset"
+                    onclick="removeEmployeeFilter()"
+                  />
+                  <input
+                    type="button"
+                    onclick="applyEmployeeFilter()"
+                    value="Apply"
+                    class="apply"
+                  />
+                </div>
               </div>
-              <div class="right-item">
-                <div class="reset">Reset</div>
-                <div class="apply">Apply</div>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
         <div class="table-main">
@@ -311,17 +334,17 @@
                 <img
                   src="images/turn-down-arrow.png"
                   alt="turn-down-arrow"
-                  height="100%"
+                  height="100%" 
                 />
-                <button>Delete</button>
+                <button disabled="true">Delete</button>
               </div>
               <div class="table-add-icon">
                 <img src="images/table-add.svg" alt="table-add-icon" />
               </div>
             </div>
             <div class="table-body">
-              <table>
-                <tr>
+              <table id="employee-table-data">
+                <!-- <tr>
                   <td>
                     <div class="table-check-box">
                       <input type="checkbox" />
@@ -331,8 +354,14 @@
                     <div class="head-user header">
                       <span>user</span>
                       <div class="icons">
-                        <i class="fa fa-chevron-up"></i>
-                        <i class="fa fa-chevron-down"></i>
+                        <i
+                          onclick="sortData(name,asec)"
+                          class="fa fa-chevron-up"
+                        ></i>
+                        <i
+                          onclick="sortData(name,desc)"
+                          class="fa fa-chevron-down"
+                        ></i>
                       </div>
                     </div>
                   </td>
@@ -340,8 +369,14 @@
                     <div class="head-location header">
                       <span>location</span>
                       <div class="icons">
-                        <i class="fa fa-chevron-up"></i>
-                        <i class="fa fa-chevron-down"></i>
+                        <i
+                          onclick="sortData(location,asec)"
+                          class="fa fa-chevron-up"
+                        ></i>
+                        <i
+                          onclick="sortData(location,desc)"
+                          class="fa fa-chevron-down"
+                        ></i>
                       </div>
                     </div>
                   </td>
@@ -349,8 +384,14 @@
                     <div class="head-department header">
                       <span>department</span>
                       <div class="icons">
-                        <i class="fa fa-chevron-up"></i>
-                        <i class="fa fa-chevron-down"></i>
+                        <i
+                          onclick="sortData(department,asec)"
+                          class="fa fa-chevron-up"
+                        ></i>
+                        <i
+                          onclick="sortData(department,desc)"
+                          class="fa fa-chevron-down"
+                        ></i>
                       </div>
                     </div>
                   </td>
@@ -358,8 +399,14 @@
                     <div class="head-role header">
                       <span>role</span>
                       <div class="icons">
-                        <i class="fa fa-chevron-up"></i>
-                        <i class="fa fa-chevron-down"></i>
+                        <i
+                          onclick="sortData(role,asec)"
+                          class="fa fa-chevron-up"
+                        ></i>
+                        <i
+                          onclick="sortData(role,desc)"
+                          class="fa fa-chevron-down"
+                        ></i>
                       </div>
                     </div>
                   </td>
@@ -367,8 +414,14 @@
                     <div class="head-emp-no header">
                       <span>emp&nbsp;no</span>
                       <div class="icons">
-                        <i class="fa fa-chevron-up"></i>
-                        <i class="fa fa-chevron-down"></i>
+                        <i
+                          onclick="sortData(empno,asec)"
+                          class="fa fa-chevron-up"
+                        ></i>
+                        <i
+                          onclick="sortData(empno,desc)"
+                          class="fa fa-chevron-down"
+                        ></i>
                       </div>
                     </div>
                   </td>
@@ -376,8 +429,14 @@
                     <div class="head-status header">
                       <span>status</span>
                       <div class="icons">
-                        <i class="fa fa-chevron-up"></i>
-                        <i class="fa fa-chevron-down"></i>
+                        <i
+                          onclick="sortData(status,asec)"
+                          class="fa fa-chevron-up"
+                        ></i>
+                        <i
+                          onclick="sortData(status,desc)"
+                          class="fa fa-chevron-down"
+                        ></i>
                       </div>
                     </div>
                   </td>
@@ -385,8 +444,14 @@
                     <div class="head-join-date header">
                       <span>join&nbsp;dt</span>
                       <div class="icons">
-                        <i class="fa fa-chevron-up"></i>
-                        <i class="fa fa-chevron-down"></i>
+                        <i
+                          onclick="sortData(joiningDate,asec)"
+                          class="fa fa-chevron-up"
+                        ></i>
+                        <i
+                          onclick="sortData(joiningDate,desc)"
+                          class="fa fa-chevron-down"
+                        ></i>
                       </div>
                     </div>
                   </td>
@@ -789,7 +854,7 @@
                   </td>
                   <td>12/03/2023</td>
                   <td><i class="fa-solid fa-ellipsis"></i></td>
-                </tr>
+                </tr> -->
               </table>
             </div>
           </div>

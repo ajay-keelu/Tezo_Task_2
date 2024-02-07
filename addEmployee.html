@@ -191,18 +191,27 @@
             <div class="left-wrapper">
               <div class="img-wrapper">
                 <img
-                  src="/images/profile-images/image-eleven.webp"
+                  src="/images/user-profile.jpg"
                   alt="profile"
                   width="70px"
                 />
               </div>
-              <button>Edit</button>
+              <label for="file">
+                <p>Edit</p>
+              </label>
+              <input
+                type="file"
+                onchange="imageChange(this)"
+                name=""
+                id="file"
+                accept="image/png, image/jpeg, image/webp, image/svg"
+              />
             </div>
             <div class="right-wrapper">
               <form>
                 <div class="title">Personal information</div>
                 <div class="employee-information">
-                  <div class="employee-number">
+                  <div class="name employee-number">
                     <label>Emp No</label>
                     <input
                       class="input-form-element"
@@ -212,7 +221,7 @@
                       onchange="changeData(this.value,this.name)"
                     />
                   </div>
-                  <div class="employee-fullname">
+                  <div class="employee">
                     <div class="name">
                       <label>First Name</label>
                       <input
@@ -246,12 +255,12 @@
                       />
                     </div>
                   </div>
-                  <div class="employee-fullname">
+                  <div class="employee">
                     <div class="name">
                       <label>Email Id</label>
                       <input
                         class="input-form-element"
-                        type="text"
+                        type="email"
                         placeholder="joe.j@technovert.com"
                         name="email"
                         onchange="changeData(this.value,this.name)"
@@ -272,7 +281,7 @@
                 <div class="title">Employment information</div>
                 <div class="employment-information">
                   <div class="details">
-                    <div class="input-form">
+                    <div class="input-form name">
                       <label>Joining Date</label>
                       <input
                         type="text"

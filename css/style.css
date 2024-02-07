@@ -536,6 +536,9 @@ body .container {
   transition: all 0.3s ease-in-out;
   background: none;
 }
+.filter-aplhabets button:has(img).active {
+  background: rgba(152, 151, 151, 0.468);
+}
 .filter-aplhabets button:hover:has(img) {
   background: rgb(252, 227, 227);
 }
@@ -621,6 +624,8 @@ input[id="dropdown-select"] {
   border-radius: 5px;
   font-size: 0.7em;
   cursor: pointer;
+  border: none;
+  outline: none;
   margin-left: 10px;
   transition: all 0.3s ease-in-out;
 }
@@ -674,7 +679,7 @@ input[id="dropdown-select"] {
 .table-content .table-body {
   align-items: center;
   width: 100%;
-  height: 41vh;
+  max-height: 41vh;
   overflow-y: scroll;
 }
 .table-content .table-body::-webkit-scrollbar,
