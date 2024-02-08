@@ -36,6 +36,7 @@ var tableEmployeeData = JSON.parse(
     ? localStorage.getItem("tableEmpData")
     : "[]"
 );
+var exportData;
 let filterDropdown = {};
 let EmployDropdown = (value, key) => {
   filterDropdown[key] = value;
@@ -161,6 +162,7 @@ addEmployee?.addEventListener("click", (e) => {
   window.location.reload();
 });
 let displayTableData = (data) => {
+  exportData = data;
   let innerData = ` 
           <tr>
             <td>
@@ -312,7 +314,15 @@ let displayTableData = (data) => {
             }</button>
           </td>
           <td>${ele.joiningDate}</td>
-          <td><i class="fa-solid fa-ellipsis"></i></td>
+          <div>
+          <td class="view-edit">
+            <button onclick="editOrView(this)" onblur="editOrHide(this)"><i class="fa-solid fa-ellipsis"></i></button>
+            <div>
+              <span>View&nbsp;Details </span>
+              <span>Edit </span>
+              <span>Delete</span>
+            </div>
+          </td>
         </tr>`;
   });
   let employeeTableData = document.querySelector("#employee-table-data");
@@ -322,6 +332,42 @@ let displayTableData = (data) => {
       `<td colspan="9" style="text-align:center">no data found</td>`;
   else employeeTableData.innerHTML = innerData;
 };
+let prevEditViewBtn;
+let editOrView = (e) => {
+  e = e.parentNode;
+  if (prevEditViewBtn && prevEditViewBtn == e) {
+    prevEditViewBtn.classList.toggle("view-toggle");
+    return;
+  }
+  if (prevEditViewBtn && prevEditViewBtn.classList.contains("view-toggle"))
+    prevEditViewBtn.classList.remove("view-toggle");
+  e.classList.add("view-toggle");
+  prevEditViewBtn = e;
+};
+let editOrHide = (e) => {
+  e = e.parentNode;
+  if (e.classList.contains("view-toggle")) e.classList.remove("view-toggle");
+};
+let exportDataToCSV = () => {
+  let csvFile = "User, Location, Departmant, Role, Emp No, Join Dt \n";
+  exportData.forEach((ele) => {
+    let arr = [];
+    arr.push(ele.firstname + " " + ele.lastname);
+    arr.push(ele.location);
+    arr.push(ele.department);
+    arr.push(ele.role);
+    arr.push(ele.empno);
+    arr.push(ele.joiningDate);
+    csvFile += arr.join(",");
+    csvFile += "\n";
+  });
+  let element = document.createElement("a");
+  element.href = "data:text/csv;charset=utf-8," + encodeURI(csvFile);
+  element.target = "_blank";
+  element.download = "data.csv";
+  element.click();
+};
+
 let displayTable = (...data) => {
   if (data.length != 0) {
     displayTableData(...data);
