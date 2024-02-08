@@ -1,6 +1,6 @@
 .role-adder {
   width: 100%;
-  padding: 20px 0;
+  padding: 20px;
 }
 .role-adder .title {
   font-weight: 700;
@@ -20,18 +20,50 @@
 }
 .role-adder .role-detail label {
   font-size: 12px;
-  padding: 5px 0;
+  padding: 5px 2px;
   font-weight: 600;
 }
 .role-adder .role-detail .input-form-element {
   width: 100%;
+}
+textarea.input-form-element {
+  width: 625px !important;
+  min-height: 100px;
+  max-height: 200px;
+  resize: vertical;
+}
+.assign-employees .input-form-element {
+  width: 100%;
+  padding-right: 18px;
+}
+.assign-employees {
+  position: relative;
+}
+.assign-employees div {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  position: relative;
+}
+.assign-employees div label {
+  position: absolute;
+  cursor: pointer;
+  right: 4px;
+  padding: 2px 5px;
+  height: 84%;
+  font-size: 10px !important;
+  display: flex;
+  color: #8993a6;
+  align-items: center;
+  justify-content: center;
+  background: #fafbfc;
 }
 .role-adder .btn-wrapper .add-employee button {
   border: none;
   outline: none;
   font-size: 12px;
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 8px 35px;
   border-radius: 4px;
   background: #f44848;
   color: #ffffff;
@@ -43,13 +75,66 @@
   outline: none;
   font-size: 12px;
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 8px 35px;
   border-radius: 4px;
 }
 .role-adder .btn-wrapper {
   width: 100%;
   display: flex;
+  align-items: center;
   padding: 40px 60px 40px 0;
   justify-content: flex-end;
-  gap: 40px;
+  gap: 15px;
+}
+.role-adder .search-employee-data {
+  max-height: 100px;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 5px;
+  overflow: hidden;
+  flex-direction: column;
+  gap: 3px;
+  top: 100%;
+  overflow-y: scroll;
+  position: absolute;
+  display: none;
+}
+.role-adder .search-employee-data::-webkit-scrollbar,
+.role-adder .search-employee-data::-webkit-scrollbar:horizontal {
+  width: 2px;
+  height: 2px;
+}
+.role-adder .search-employee-data::-webkit-scrollbar-track,
+.role-adder .search-employee-data::-webkit-scrollbar-track:horizontal {
+  display: none;
+}
+.role-adder .search-employee-data::-webkit-scrollbar-thumb,
+.role-adder .search-employee-data::-webkit-scrollbar-thumb:horizontal {
+  background-color: #ff9f9f;
+}
+.role-adder .search-employee-data .employee-card {
+  padding: 3px 5px;
+  border: 1.5px solid lightgrey;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+.role-adder .search-employee-data .employee-card .profile {
+  width: 80%;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.role-adder .search-employee-data .employee-card .profile .profile-image {
+  width: 25px;
+  aspect-ratio: 1;
+  border-radius: 30px;
+  overflow: hidden;
+}
+.role-adder .search-employee-data .employee-card .profile .name {
+  color: #293b5b;
+  font-weight: 500;
+  font-size: 10px;
 }

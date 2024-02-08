@@ -189,60 +189,113 @@
               </div>
             </div>
           </div>
-          <div class="role-adder">
-            <div class="title">Create New Role</div>
-            <div class="role-department">
-              <div class="role-detail">
-                <label for="">Role Name</label>
-                <input
-                  type="text"
-                  placeholder="Text"
-                  class="input-form-element"
-                  name=""
-                  id=""
-                />
-              </div>
-              <div class="role-detail">
-                <label>Department</label>
-                <select class="input-form-element">
-                  <option value="">UX Designer</option>
-                  <option value="">Product Engg.</option>
-                </select>
-              </div>
-            </div>
-            <div class="role-detail description">
-              <label for="">Description</label>
-              <textarea
+        </div>
+        <div class="role-adder">
+          <div class="title">Create New Role</div>
+          <div class="role-department">
+            <div class="role-detail">
+              <label for="">Role Name</label>
+              <input
+                type="text"
+                placeholder="Text"
                 class="input-form-element"
                 name=""
                 id=""
-                cols="30"
-                rows="10"
-              ></textarea>
+              />
             </div>
-            <div class="location role-detail">
-              <label>Location</label>
+            <div class="role-detail">
+              <label>Department</label>
               <select class="input-form-element">
-                <option value="">Hyderabad</option>
-                <option value="">Banglore</option>
-                <option value="">Vijayawada</option>
+                <option value="">UX Designer</option>
+                <option value="">Product Engg.</option>
               </select>
             </div>
-            <div class="assign-employees role-detail">
-              <label for="">Assign Employees</label>
-              <select class="input-form-element">
-                <option value="">Employee 1</option>
-                <option value="">Employee 2</option>
-                <option value="">Employee 3</option>
-              </select>
+          </div>
+          <div class="role-detail description">
+            <label for="">Description</label>
+            <textarea class="input-form-element" placeholder="Text"></textarea>
+          </div>
+          <div class="location role-detail">
+            <label>Location</label>
+            <select class="input-form-element">
+              <option value="">Hyderabad</option>
+              <option value="">Banglore</option>
+              <option value="">Vijayawada</option>
+            </select>
+          </div>
+          <div class="assign-employees role-detail">
+            <label for="">Assign Employees</label>
+            <div>
+              <input
+                type="text"
+                name="employee-search"
+                id="employee-search"
+                placeholder="Search for an employee "
+                class="input-form-element"
+              />
+              <label for="employee-search" class="fa fa-chevron-down"></label>
             </div>
-            <div class="btn-wrapper">
-              <div class="cancel">
-                <button type="reset">Cancel</button>
+            <div class="search-employee-data">
+              <div class="employee-card">
+                <div class="profile">
+                  <div class="profile-image">
+                    <img
+                      src="images/profile-images/image-five.webp"
+                      width="23px"
+                      alt="profile"
+                    />
+                  </div>
+                  <div class="name">Jennifer Dsouza</div>
+                </div>
+                <input type="checkbox" name="" id="" />
               </div>
-              <div class="add-employee">
-                <button type="submit">Add Role</button>
+              <div class="employee-card">
+                <div class="profile">
+                  <div class="profile-image">
+                    <img
+                      src="images/profile-images/image-nine.webp"
+                      width="23px"
+                      alt="profile"
+                    />
+                  </div>
+                  <div class="name">Klaus Michelson</div>
+                </div>
+                <input type="checkbox" name="" id="" />
               </div>
+              <div class="employee-card">
+                <div class="profile">
+                  <div class="profile-image">
+                    <img
+                      src="images/profile-images/image-one.webp"
+                      width="23px"
+                      alt="profile"
+                    />
+                  </div>
+                  <div class="name">Jenna Asunt</div>
+                </div>
+                <input type="checkbox" name="" id="" />
+              </div>
+              <div class="employee-card">
+                <div class="profile">
+                  <div class="profile-image">
+                    <img
+                      src="images/profile-images/image-twelve.webp"
+                      width="23px"
+                      alt="profile"
+                    />
+                  </div>
+                  <div class="name">Robert Donovan</div>
+                </div>
+                <input type="checkbox" name="" id="" />
+              </div>
+            </div>
+          </div>
+          <div class="btn-wrapper">
+            <div class="cancel">
+              <button type="reset">Cancel</button>
+            </div>
+            <div class="add-employee">
+              <button type="submit">Add Role</button>
             </div>
           </div>
         </div>
