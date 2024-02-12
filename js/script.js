@@ -27,13 +27,12 @@ inputEmployeeSearch?.addEventListener("focus", (e) => {
 
 inputEmployeeSearch?.addEventListener("keyup", (e) => {
   let filterArray = [];
-  if (!e.target.value) {
+  if (e.target.value) {
     getEmployeeData().forEach((ele) => {
       let name = ele.firstname + ele.lastname;
       if (name.toLowerCase().includes(e.target.value.toLowerCase()))
         filterArray.push(ele);
     });
-    return;
   }
 
   displayEmployeeSearchData(filterArray);
