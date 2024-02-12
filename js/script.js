@@ -1,8 +1,6 @@
 let showHideMenu = document.querySelector('img[alt="direction"]');
 let sidebar = document.querySelector(".sidebar");
 let filterButtons = document.querySelectorAll(".filter-buttons-wrapper button");
-let tableCheckbox = document.querySelectorAll(".table-checkbox");
-let deleteButton = document.querySelector(".delete-modifier button");
 let searchEmployeeData = document.querySelector(".search-employee-data");
 let inputEmployeeSearch = document.querySelector(
   '.assign-employees input[name="employee-search"]'
@@ -14,29 +12,41 @@ var tableEmployeeData = JSON.parse(
     : "[]"
 );
 
-inputEmployeeSearch?.addEventListener("click", () => {
-  searchEmployeeData.style.display = "block";
-  displayEmployeeSearchData(tableEmployeeData);
+inputEmployeeSearch?.addEventListener("focus", (e) => {
+  searchEmployeeData.style.display = "flex";
+  let filterArray = [];
+  if (e.target.value) {
+    tableEmployeeData.forEach((ele) => {
+      let name = ele.firstname + ele.lastname;
+      if (name.toLowerCase().includes(e.target.value.toLowerCase()))
+        filterArray.push(ele);
+    });
+  }
+
+  displayEmployeeSearchData(filterArray);
 });
 
 inputEmployeeSearch?.addEventListener("keyup", (e) => {
+  if (!e.target.value) {
+    displayEmployeeSearchData([]);
+    return;
+  }
   let filterArray = [];
   tableEmployeeData.forEach((ele) => {
-    let name = ele.firstname + " " + ele.lastname;
+    let name = ele.firstname + ele.lastname;
     if (name.toLowerCase().includes(e.target.value.toLowerCase()))
       filterArray.push(ele);
   });
   displayEmployeeSearchData(filterArray);
 });
 
-inputEmployeeSearch?.addEventListener("blur", () => {
-  let flag = true;
-  searchEmployeeData.addEventListener("click", () => {
-    flag = false;
-  });
-  if (!flag) searchEmployeeData.style.display = "none";
+inputEmployeeSearch?.addEventListener("blur", (e) => {
+  if (!e.target.value) {
+    searchEmployeeData.style.display = "none";
+  }
 });
-showHideMenu.addEventListener("click", () => {
+
+document.querySelector('img[alt="direction"]').addEventListener("click", () => {
   sidebar.classList.toggle("sidebar-toggle");
 });
 
@@ -65,29 +75,26 @@ class Employee {
     this.joiningDate = joiningDate;
   }
 }
+
 let displayEmployeeSearchData = (data) => {
   let empData = "";
   data.forEach((ele) => {
     empData += `
-        <div class="employee-card">
-        <div class="profile">
-          <div class="profile-image">
-            <img
-              src="${ele.image ? ele.image : "images/user-profile.jpg"}"
-              width="23px"
-              alt="profile"
-            />
-          </div>
-          <div class="name">${ele.firstname + " " + ele.lastname}</div>
-        </div>
-        <input type="checkbox" name="" id="" />
-      </div>
-      `;
+              <div class="employee-card">
+              <div for="emp${ele.empno}" class="profile">
+                <div class="profile-image">
+                  <img
+                    src="${ele.image ? ele.image : "images/user-profile.jpg"}"
+                    width="23px"
+                    alt="profile"
+                  />
+                </div>
+                <div class="name">${ele.firstname + " " + ele.lastname}</div>
+              </div>
+              <input type="checkbox" name="" id="emp${ele.empno}" />
+            </div>
+            `;
   });
-  if (data.length == 0) {
-    searchEmployeeData.innerHTML = "no employee found";
-    return;
-  }
   searchEmployeeData.innerHTML = empData;
 };
 var exportData;
@@ -236,7 +243,7 @@ let displayTableData = (data) => {
           <tr>
             <td>
               <div class="table-check-box">
-                <input type="checkbox" />
+                <input type="checkbox" onchange="employeeCheckBox(this)" />
               </div>
             </td>
             <td>
@@ -345,7 +352,7 @@ let displayTableData = (data) => {
               </div>
             </td>
             <td>
-              <div class="user-modification">
+              <div class="user-modification" style="padding:0px 10px">
                 <i class="fa-solid fa-ellipsis"></i>
               </div>
             </td>
@@ -355,7 +362,7 @@ let displayTableData = (data) => {
         <tr>
           <td>
             <div class="table-check-box">
-              <input type="checkbox" class="table-checkbox" />
+              <input type="checkbox" class="table-checkbox" onchange="employeeCheckBox()" />
             </div>
           </td>
           <td>
@@ -385,11 +392,15 @@ let displayTableData = (data) => {
           <td>${ele.joiningDate}</td>
           <div>
           <td class="view-edit">
-            <button onclick="editOrView(this)" onblur="editOrHide(this)"><i class="fa-solid fa-ellipsis"></i></button>
+            <button onclick="editOrView(this)" onblur="editOrHide(this,${
+              ele.empno
+            })">
+                <i class="fa-solid fa-ellipsis"></i>
+            </button>
             <div>
               <span>View&nbsp;Details </span>
               <span>Edit </span>
-              <span>Delete</span>
+              <span class="delete" id="emp-${ele.empno}">Delete</span>
             </div>
           </td>
         </tr>`;
@@ -399,29 +410,42 @@ let displayTableData = (data) => {
   if (data.length == 0 && employeeTableData)
     employeeTableData.innerHTML =
       innerData +
-      `<td colspan="9" style="text-align:center">no data found</td>`;
+      `<td colspan="9" style="text-align:center; padding:15px 0px">No data found</td>`;
   else {
     if (employeeTableData) employeeTableData.innerHTML = innerData;
   }
 };
 
 let prevEditViewBtn;
+var tableDataDelete;
 
 let editOrView = (e) => {
   e = e.parentNode;
   if (prevEditViewBtn && prevEditViewBtn == e) {
     prevEditViewBtn.classList.toggle("view-toggle");
+    tableDataDelete = document.querySelector(".view-toggle div .delete");
     return;
   }
-  if (prevEditViewBtn && prevEditViewBtn.classList.contains("view-toggle"))
+  if (prevEditViewBtn && prevEditViewBtn.classList.contains("view-toggle")) {
     prevEditViewBtn.classList.remove("view-toggle");
+  }
   e.classList.add("view-toggle");
+  tableDataDelete = document.querySelector(".view-toggle div .delete");
   prevEditViewBtn = e;
 };
 
-let editOrHide = (e) => {
+let editOrHide = (e, empno) => {
   e = e.parentNode;
-  if (e.classList.contains("view-toggle")) e.classList.remove("view-toggle");
+  let tableDataDelete = document.querySelector(`span#emp-${empno}`);
+  tableDataDelete.addEventListener("click", () => {
+    let filterArray = [];
+    tableEmployeeData.forEach((ele) => {
+      if (ele.empno != empno) filterArray.push(ele);
+    });
+    tableEmployeeData = filterArray;
+    localStorage.setItem("tableEmpData", JSON.stringify(filterArray));
+    displayTable(filterArray);
+  });
 };
 
 let exportDataToCSV = () => {
@@ -488,23 +512,37 @@ let sortData = (key, ord) => {
   });
   displayTable(sorteddata);
 };
-
 displayTable();
-
+let deleteButton = document.querySelector(".delete-modifier button");
 deleteButton?.addEventListener("click", () => {
-  console.log("hello");
-});
-
-tableCheckbox?.forEach((ele) => {
-  ele.addEventListener("change", () => {
-    let flag = false;
-    tableCheckbox.forEach((data) => {
-      if (data.checked) flag = true;
-    });
-    if (flag) {
-      deleteButton.removeAttribute("disabled");
-    } else {
-      deleteButton.setAttribute("disabled", "true");
+  let tableCheckbox = document.querySelectorAll("input.table-checkbox");
+  tableCheckbox.forEach((ele) => {
+    if (ele.checked) {
+      let empno = ele.parentNode.parentNode.parentNode.children[5].innerText;
+      let filterArray = [];
+      tableEmployeeData.forEach((ele) => {
+        if (ele.empno != empno) filterArray.push(ele);
+      });
+      tableEmployeeData = filterArray;
+      localStorage.setItem("tableEmpData", JSON.stringify(filterArray));
+      displayTable(filterArray);
     }
   });
 });
+let employeeCheckBox = (e) => {
+  let tableCheckbox = document.querySelectorAll("input.table-checkbox");
+  e &&
+    tableCheckbox.forEach((ele) => {
+      if (e && e.checked) ele.checked = true;
+      else ele.checked = false;
+    });
+  let flag = false;
+  tableCheckbox.forEach((data) => {
+    if (data.checked) flag = true;
+  });
+  if (flag) {
+    deleteButton.removeAttribute("disabled");
+  } else {
+    deleteButton.setAttribute("disabled", "true");
+  }
+};

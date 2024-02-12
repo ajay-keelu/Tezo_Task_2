@@ -805,6 +805,7 @@ input[id="dropdown-select"] {
 .user-profile-card .profile-description .name {
   color: #000000;
   font-size: 15px;
+  text-transform: capitalize;
   font-weight: 700;
 }
 .user-profile-card .profile-description .email {
@@ -850,12 +851,13 @@ input[id="dropdown-select"] {
 .view-edit.view-toggle div {
   display: flex;
   width: max-content;
-  transform: translateX(-40px) scale(1);
+  transform: translateX(-50px) scale(1);
 }
 .view-edit div span {
   background: rgb(255, 255, 255);
   padding: 8px 12px;
   width: 100%;
+  position: relative;
   border-bottom: 1px solid rgb(214, 212, 212);
 }
 .view-edit div span:hover {
@@ -865,7 +867,8 @@ input[id="dropdown-select"] {
   border: none;
   outline: none;
   background: none !important;
-  padding: 20px 0 !important;
+  padding: 20px 10px !important;
+  cursor: pointer;
 }
 /* Media queries to mobile responsive */
 @media screen and (max-width: 426px) {
