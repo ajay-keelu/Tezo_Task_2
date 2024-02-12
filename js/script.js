@@ -1,42 +1,41 @@
-let showHideMenu = document.querySelector('img[alt="direction"]');
 let sidebar = document.querySelector(".sidebar");
 let filterButtons = document.querySelectorAll(".filter-buttons-wrapper button");
 let searchEmployeeData = document.querySelector(".search-employee-data");
 let inputEmployeeSearch = document.querySelector(
   '.assign-employees input[name="employee-search"]'
 );
+function getEmployeeData() {
+  return JSON.parse(localStorage.getItem("EmployeeData")) || [];
+}
 
-var tableEmployeeData = JSON.parse(
-  localStorage.getItem("tableEmpData")
-    ? localStorage.getItem("tableEmpData")
-    : "[]"
-);
+function setEmployeeData(data) {
+  localStorage.setItem("EmployeeData", JSON.stringify(data));
+}
 
 inputEmployeeSearch?.addEventListener("focus", (e) => {
   searchEmployeeData.style.display = "flex";
   let filterArray = [];
   if (e.target.value) {
-    tableEmployeeData.forEach((ele) => {
+    getEmployeeData().forEach((ele) => {
       let name = ele.firstname + ele.lastname;
       if (name.toLowerCase().includes(e.target.value.toLowerCase()))
         filterArray.push(ele);
     });
   }
-
   displayEmployeeSearchData(filterArray);
 });
 
 inputEmployeeSearch?.addEventListener("keyup", (e) => {
+  let filterArray = [];
   if (!e.target.value) {
-    displayEmployeeSearchData([]);
+    getEmployeeData().forEach((ele) => {
+      let name = ele.firstname + ele.lastname;
+      if (name.toLowerCase().includes(e.target.value.toLowerCase()))
+        filterArray.push(ele);
+    });
     return;
   }
-  let filterArray = [];
-  tableEmployeeData.forEach((ele) => {
-    let name = ele.firstname + ele.lastname;
-    if (name.toLowerCase().includes(e.target.value.toLowerCase()))
-      filterArray.push(ele);
-  });
+
   displayEmployeeSearchData(filterArray);
 });
 
@@ -108,7 +107,7 @@ let EmployDropdown = (value, key) => {
 let applyEmployeeFilter = () => {
   let filteredData = [];
 
-  tableEmployeeData.forEach((ele) => {
+  getEmployeeData().forEach((ele) => {
     let flag = true;
     for (let key in filterDropdown) {
       if (filterDropdown[key] && ele[key] != filterDropdown[key]) flag = false;
@@ -119,7 +118,7 @@ let applyEmployeeFilter = () => {
 };
 let removeEmployeeFilter = () => {
   filterDropdown = {};
-  displayTable(tableEmployeeData);
+  displayTable(getEmployeeData());
 };
 
 let formDataEmployee = { status: "Active" };
@@ -230,11 +229,14 @@ addEmployee?.addEventListener("click", (e) => {
     formDataEmployee.joiningDate
   );
 
-  tableEmployeeData.push(emp);
-  localStorage.setItem("tableEmpData", JSON.stringify(tableEmployeeData));
+  let employeeData = getEmployeeData();
+  employeeData.push(emp);
+  setEmployeeData(employeeData);
   alert("added successful");
   formDataEmployee = { status: "Active" };
-  window.location.reload();
+  document.querySelector("#employeeForm").reset();
+  let imageWrapper = document.querySelector(".left-wrapper .img-wrapper img");
+  imageWrapper.src = "images/user-profile.jpg";
 });
 
 let displayTableData = (data) => {
@@ -369,7 +371,7 @@ let displayTableData = (data) => {
             <div class="user-profile-card">
               <div class="profile-img">
                 <img
-                  src="${ele.image ? ele.image : "/images/user-profile.jpg"}"
+                  src="${ele.image ? ele.image : "images/user-profile.jpg"}"
                   alt="user-profile"
                   height="30px"
                 />
@@ -438,18 +440,15 @@ let editOrHide = (e, empno) => {
   e = e.parentNode;
   let tableDataDelete = document.querySelector(`span#emp-${empno}`);
   tableDataDelete.addEventListener("click", () => {
-    let filterArray = [];
-    tableEmployeeData.forEach((ele) => {
-      if (ele.empno != empno) filterArray.push(ele);
+    let filterArray = exportData.filter((ele) => {
+      return ele.empno != empno;
     });
-    tableEmployeeData = filterArray;
-    localStorage.setItem("tableEmpData", JSON.stringify(filterArray));
     displayTable(filterArray);
   });
 };
 
 let exportDataToCSV = () => {
-  let csvFile = "User, Location, Departmant, Role, Emp No, Join Dt \n";
+  let csvFile = "User, Location, Departmant, Role, Emp No, Status, Join Dt \n";
   exportData.forEach((ele) => {
     let arr = [];
     arr.push(ele.firstname + " " + ele.lastname);
@@ -457,15 +456,15 @@ let exportDataToCSV = () => {
     arr.push(ele.department);
     arr.push(ele.role);
     arr.push(ele.empno);
+    arr.push(ele.status);
     arr.push(ele.joiningDate);
     csvFile += arr.join(",");
     csvFile += "\n";
   });
-
   let element = document.createElement("a");
   element.href = "data:text/csv;charset=utf-8," + encodeURI(csvFile);
   element.target = "_blank";
-  element.download = "data.csv";
+  element.download = "EmployeeData.csv";
   element.click();
 };
 
@@ -473,7 +472,7 @@ let displayTable = (...data) => {
   if (data.length != 0) {
     displayTableData(...data);
   } else {
-    displayTableData(tableEmployeeData);
+    displayTableData(getEmployeeData());
   }
 };
 
@@ -484,7 +483,7 @@ filterButtons.forEach((ele) => {
     if (prevFilterButton) prevFilterButton.classList.remove("active");
     ele.classList.add("active");
     prevFilterButton = ele;
-    let filterData = tableEmployeeData.filter((data) => {
+    let filterData = getEmployeeData().filter((data) => {
       return data.firstname
         .toLowerCase()
         .startsWith(ele.innerText.toLowerCase());
@@ -512,23 +511,29 @@ let sortData = (key, ord) => {
   });
   displayTable(sorteddata);
 };
+
 displayTable();
+
 let deleteButton = document.querySelector(".delete-modifier button");
+
 deleteButton?.addEventListener("click", () => {
   let tableCheckbox = document.querySelectorAll("input.table-checkbox");
+  let employeeCheckedDetails = [];
   tableCheckbox.forEach((ele) => {
-    if (ele.checked) {
-      let empno = ele.parentNode.parentNode.parentNode.children[5].innerText;
-      let filterArray = [];
-      tableEmployeeData.forEach((ele) => {
-        if (ele.empno != empno) filterArray.push(ele);
-      });
-      tableEmployeeData = filterArray;
-      localStorage.setItem("tableEmpData", JSON.stringify(filterArray));
-      displayTable(filterArray);
-    }
+    if (ele.checked)
+      employeeCheckedDetails.push(
+        ele.parentNode.parentNode.parentNode.children[5].innerText
+      );
   });
+  let deletedEmployee = exportData;
+  employeeCheckedDetails.forEach((ele) => {
+    deletedEmployee = deletedEmployee.filter((emp) => {
+      return ele != emp.empno;
+    });
+  });
+  displayTable(deletedEmployee);
 });
+
 let employeeCheckBox = (e) => {
   let tableCheckbox = document.querySelectorAll("input.table-checkbox");
   e &&
