@@ -37,7 +37,7 @@ inputEmployeeSearch?.addEventListener("blur", (e) => {
   }
 });
 document.querySelector('img[alt="direction"]').addEventListener("click", () => {
-  sidebar.classList.toggle("sidebar-toggle");
+  document.querySelector(".sidebar").classList.toggle("sidebar-toggle");
 });
 class Employee {
   constructor(
@@ -151,17 +151,26 @@ let changeData = (value, name) => {
   formDataEmployee[name] = value;
 };
 function validateEmail(email) {
-  if (!email) return;
   let ele = document.querySelector(
     `.employee-information .input-form-element[name="email"]`
   );
   let spanCheck = document.querySelector(
     `.employee-information .input-form-element[name="email"]+span[name="email"]`
   );
+  if (!email) {
+    if (spanCheck) {
+      spanCheck.innerText = `<b class="exclamation"><b>!</b></b> <b style="text-transform:capitalize">email</b> field is required`;
+    } else {
+      let span = document.createElement("span");
+      span.setAttribute("name", "email");
+      ele.parentNode.appendChild(span);
+      span.innerHTML = `<b class="exclamation"><b>!</b></b> <b style="text-transform:capitalize">email</b> field is required`;
+    }
+    return;
+  }
   if (!email.includes("@") || !email.includes(".")) {
     if (spanCheck) {
       spanCheck.innerText = "email must contains @ and .";
-      console.log(spanCheck);
     } else {
       let span = document.createElement("span");
       span.setAttribute("name", "email");
@@ -192,6 +201,7 @@ function validateEmail(email) {
     }
     return;
   }
+  ele.parentNode.removeChild(spanCheck);
   return true;
 }
 let imageChange = (imagedata) => {
@@ -207,7 +217,7 @@ let imageChange = (imagedata) => {
     alert("Please upload the image again!");
   };
 };
-let requiredFields = ["empno", "firstname", "lastname", "email", "joiningDate"];
+let requiredFields = ["empno", "email", "firstname", "lastname", "joiningDate"];
 let addEmployee = document.querySelector(".form-add-employee");
 addEmployee?.addEventListener("click", (e) => {
   e.preventDefault();
@@ -223,19 +233,20 @@ addEmployee?.addEventListener("click", (e) => {
       if (!spanCheck) {
         ele.parentNode.appendChild(span);
         span.innerHTML = `<b class="exclamation"><b>!</b></b> <b style="text-transform:capitalize">${field}</b> field is required`;
+      } else {
+        spanCheck.innerHTML = `<b class="exclamation"><b>!</b></b> <b style="text-transform:capitalize">${field}</b> field is required`;
       }
       flag = true;
     } else {
-      if (spanCheck) ele.parentNode.removeChild(spanCheck);
+      if (field != "email") {
+        if (spanCheck) ele.parentNode.removeChild(spanCheck);
+      } else {
+        let val = validateEmail(formDataEmployee["email"]);
+        if (!val) return;
+      }
     }
   }
-
   if (flag) return;
-
-  flag = validateEmail(formDataEmployee["email"]);
-
-  if (!flag) return;
-
   let emp = new Employee(
     formDataEmployee.image,
     formDataEmployee.firstname,
@@ -248,15 +259,17 @@ addEmployee?.addEventListener("click", (e) => {
     formDataEmployee.status,
     formDataEmployee.joiningDate
   );
-
   let employeeData = getEmployeeData();
   employeeData.push(emp);
   setEmployeeData(employeeData);
-  alert("added successful");
   formDataEmployee = { status: "Active" };
-  document.querySelector("#employeeForm").reset();
-  let imageWrapper = document.querySelector(".left-wrapper .img-wrapper img");
-  imageWrapper.src = "images/user-profile.jpg";
+  toastToggle();
+  setTimeout(() => {
+    toastToggle();
+    document.querySelector("#employeeForm").reset();
+    let imageWrapper = document.querySelector(".left-wrapper .img-wrapper img");
+    imageWrapper.src = "images/user-profile.jpg";
+  }, 3000);
 });
 function displayTableData(data) {
   exportData = data;
@@ -413,16 +426,16 @@ function displayTableData(data) {
           <td>${ele.joiningDate}</td>
           <div>
           <td class="view-edit">
-            <button onclick="editOrView(this)" onblur="editOrHide(this,${
+            <button onclick="editOrView(this,${
               ele.empno
-            })">
+            })" onblur="editOrHide()">
                 <i class="fa-solid fa-ellipsis"></i>
+                <div>
+                  <span>View&nbsp;Details </span>
+                  <span>Edit </span>
+                  <span class="delete" id="emp-${ele.empno}">Delete</span>
+                </div>
             </button>
-            <div>
-              <span>View&nbsp;Details </span>
-              <span>Edit </span>
-              <span class="delete" id="emp-${ele.empno}">Delete</span>
-            </div>
           </td>
         </tr>`;
   });
@@ -437,12 +450,19 @@ function displayTableData(data) {
   }
 }
 let prevEditViewBtn;
-var tableDataDelete;
-let editOrView = (e) => {
+let editOrView = (e, empno) => {
   e = e.parentNode;
+  let tableDataDelete = document.querySelector(`span#emp-${empno}`);
+  tableDataDelete?.addEventListener("click", () => {
+    let filterArray = allEmployeeData.filter((ele) => {
+      return ele.empno != empno;
+    });
+    allEmployeeData = filterArray;
+    displayTable(filterArray);
+    return;
+  });
   if (prevEditViewBtn && prevEditViewBtn == e) {
     prevEditViewBtn.classList.toggle("view-toggle");
-    tableDataDelete = document.querySelector(".view-toggle div .delete");
     return;
   }
   if (prevEditViewBtn && prevEditViewBtn.classList.contains("view-toggle")) {
@@ -452,16 +472,10 @@ let editOrView = (e) => {
   tableDataDelete = document.querySelector(".view-toggle div .delete");
   prevEditViewBtn = e;
 };
-let editOrHide = (e, empno) => {
-  e = e.parentNode;
-  let tableDataDelete = document.querySelector(`span#emp-${empno}`);
-  tableDataDelete.addEventListener("click", () => {
-    let filterArray = allEmployeeData.filter((ele) => {
-      return ele.empno != empno;
-    });
-    allEmployeeData = filterArray;
-    displayTable(filterArray);
-  });
+let editOrHide = () => {
+  if (prevEditViewBtn && prevEditViewBtn.classList.contains("view-toggle")) {
+    prevEditViewBtn.classList.remove("view-toggle");
+  }
 };
 let exportDataToCSV = () => {
   let csvFile = "User, Location, Departmant, Role, Emp No, Status, Join Dt \n";
@@ -579,3 +593,6 @@ let employeeCheckBox = (e) => {
     deleteButton.setAttribute("disabled", "true");
   }
 };
+function toastToggle() {
+  document.querySelector(".toast").classList.toggle("toast-toggle");
+}

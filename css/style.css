@@ -395,6 +395,7 @@ body .container {
   display: flex;
   align-items: center;
   width: 100%;
+  gap: 10px;
   justify-content: flex-end;
 }
 .search-bar .profile .description .role {

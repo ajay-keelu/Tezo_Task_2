@@ -72,6 +72,15 @@
         </section>
       </div>
       <div class="main-content">
+        <div class="toast">
+          <div class="toast-success">
+            <div class="icon">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <!-- <button onclick="toastToggle()">&times;</button> -->
+            <div class="message">Employee Added Successfully</div>
+          </div>
+        </div>
         <div class="search-header">
           <div class="search-bar">
             <div class="logo">
@@ -221,12 +230,14 @@
                       onchange="changeData(this.value,this.name)"
                     />
                   </div>
+
                   <div class="employee">
                     <div class="name">
                       <label>First Name</label>
                       <input
                         class="input-form-element"
                         type="text"
+                        minlength="3"
                         placeholder="Text"
                         name="firstname"
                         onchange="changeData(this.value,this.name)"
@@ -287,6 +298,9 @@
                         type="text"
                         class="input-form-element"
                         name="joiningDate"
+                        placeholder="12/12/2012"
+                        onfocus="(this.type='date')"
+                        onblur="(this.type='text')"
                         onchange="changeData(this.value,this.name)"
                       />
                     </div>
