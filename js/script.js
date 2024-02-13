@@ -1,22 +1,18 @@
-let sidebar = document.querySelector(".sidebar");
-let filterButtons = document.querySelectorAll(".filter-buttons-wrapper button");
-let searchEmployeeData = document.querySelector(".search-employee-data");
 let inputEmployeeSearch = document.querySelector(
   '.assign-employees input[name="employee-search"]'
 );
 function getEmployeeData() {
   return JSON.parse(localStorage.getItem("EmployeeData")) || [];
 }
-
 function setEmployeeData(data) {
   localStorage.setItem("EmployeeData", JSON.stringify(data));
 }
-
+let allEmployeeData = getEmployeeData();
 inputEmployeeSearch?.addEventListener("focus", (e) => {
-  searchEmployeeData.style.display = "flex";
+  document.querySelector(".search-employee-data").style.display = "flex";
   let filterArray = [];
   if (e.target.value) {
-    getEmployeeData().forEach((ele) => {
+    allEmployeeData.forEach((ele) => {
       let name = ele.firstname + ele.lastname;
       if (name.toLowerCase().includes(e.target.value.toLowerCase()))
         filterArray.push(ele);
@@ -24,30 +20,25 @@ inputEmployeeSearch?.addEventListener("focus", (e) => {
   }
   displayEmployeeSearchData(filterArray);
 });
-
 inputEmployeeSearch?.addEventListener("keyup", (e) => {
   let filterArray = [];
   if (e.target.value) {
-    getEmployeeData().forEach((ele) => {
+    allEmployeeData.forEach((ele) => {
       let name = ele.firstname + ele.lastname;
       if (name.toLowerCase().includes(e.target.value.toLowerCase()))
         filterArray.push(ele);
     });
   }
-
   displayEmployeeSearchData(filterArray);
 });
-
 inputEmployeeSearch?.addEventListener("blur", (e) => {
   if (!e.target.value) {
-    searchEmployeeData.style.display = "none";
+    document.querySelector(".search-employee-data").style.display = "none";
   }
 });
-
 document.querySelector('img[alt="direction"]').addEventListener("click", () => {
   sidebar.classList.toggle("sidebar-toggle");
 });
-
 class Employee {
   constructor(
     image,
@@ -73,40 +64,76 @@ class Employee {
     this.joiningDate = joiningDate;
   }
 }
-
-let displayEmployeeSearchData = (data) => {
+function displayEmployeeSearchData(data) {
   let empData = "";
   data.forEach((ele) => {
     empData += `
-              <div class="employee-card">
-              <div for="emp${ele.empno}" class="profile">
-                <div class="profile-image">
-                  <img
-                    src="${ele.image ? ele.image : "images/user-profile.jpg"}"
-                    width="23px"
-                    alt="profile"
-                  />
-                </div>
-                <div class="name">${ele.firstname + " " + ele.lastname}</div>
-              </div>
-              <input type="checkbox" name="" id="emp${ele.empno}" />
-            </div>
-            `;
+<label for="emp${ele.empno}" class="employee-card">
+  <div  class="profile">
+    <div class="profile-image">
+      <img
+        src="${ele.image ? ele.image : "images/user-profile.jpg"}"
+        width="23px"
+        alt="profile"
+      />
+    </div>
+    <div class="name">${ele.firstname + " " + ele.lastname}</div>
+  </div>
+  <input type="checkbox" onchange="addingRoleToEmployee(${ele.empno})" id="emp${
+      ele.empno
+    }" ${ele.isCheckedRole ? "checked" : ""} />
+</label>`;
   });
-  searchEmployeeData.innerHTML = empData;
+  document.querySelector(".search-employee-data").innerHTML = empData;
+}
+let removeFromEmployeeBubble = (empno) => {
+  let employee = document.querySelector(`.employee-card #emp${empno}`);
+  employee ? (employee.checked = false) : "";
+  allEmployeeData.forEach((ele) => {
+    if (ele.empno == empno) ele.isCheckedRole = false;
+  });
+  displayEmployeeRoleBubble();
+};
+function displayEmployeeRoleBubble() {
+  let employeeBubble = document.querySelector(".employee-bubble");
+  employeeBubble.innerHTML = "";
+  let flag = true;
+  allEmployeeData.forEach((ele) => {
+    if (ele.isCheckedRole && ele.isCheckedRole == true) {
+      flag = false;
+      employeeBubble.innerHTML += `<div class="employee-card">
+        <img
+          src=${ele.image ? ele.image : "images/user-profile.jpg"}
+          alt="profile"
+        />
+        <div class="name">${ele.firstname}</div>
+        <button onclick="removeFromEmployeeBubble(${
+          ele.empno
+        })">&times;</button>
+      </div>`;
+    }
+  });
+  if (flag) employeeBubble.style.display = "none";
+  else employeeBubble.style.display = "flex";
+}
+let addingRoleToEmployee = (empno) => {
+  allEmployeeData.forEach((ele) => {
+    if (ele.empno == empno) {
+      if (document.querySelector(`.employee-card #emp${empno}`).checked)
+        ele.isCheckedRole = true;
+      else ele.isCheckedRole = false;
+    }
+  });
+  displayEmployeeRoleBubble();
 };
 var exportData;
-
 let filterDropdown = {};
-
 let EmployDropdown = (value, key) => {
   filterDropdown[key] = value;
 };
-
-let applyEmployeeFilter = () => {
+function applyEmployeeFilter() {
   let filteredData = [];
-
-  getEmployeeData().forEach((ele) => {
+  allEmployeeData.forEach((ele) => {
     let flag = true;
     for (let key in filterDropdown) {
       if (filterDropdown[key] && ele[key] != filterDropdown[key]) flag = false;
@@ -114,19 +141,16 @@ let applyEmployeeFilter = () => {
     if (flag) filteredData.push(ele);
   });
   displayTable(filteredData);
-};
+}
 let removeEmployeeFilter = () => {
   filterDropdown = {};
-  displayTable(getEmployeeData());
+  displayTable(allEmployeeData);
 };
-
 let formDataEmployee = { status: "Active" };
-
 let changeData = (value, name) => {
   formDataEmployee[name] = value;
 };
-
-let validateEmail = (email) => {
+function validateEmail(email) {
   if (!email) return;
   let ele = document.querySelector(
     `.employee-information .input-form-element[name="email"]`
@@ -169,8 +193,7 @@ let validateEmail = (email) => {
     return;
   }
   return true;
-};
-
+}
 let imageChange = (imagedata) => {
   let imageWrapper = document.querySelector(".left-wrapper .img-wrapper img");
   let file = imagedata.files[0];
@@ -184,10 +207,8 @@ let imageChange = (imagedata) => {
     alert("Please upload the image again!");
   };
 };
-
 let requiredFields = ["empno", "firstname", "lastname", "email", "joiningDate"];
 let addEmployee = document.querySelector(".form-add-employee");
-
 addEmployee?.addEventListener("click", (e) => {
   e.preventDefault();
   let flag = false;
@@ -201,7 +222,7 @@ addEmployee?.addEventListener("click", (e) => {
       span.setAttribute("name", field);
       if (!spanCheck) {
         ele.parentNode.appendChild(span);
-        span.innerHTML = `<b class="exclamation"><b>!</b></b> this field is required`;
+        span.innerHTML = `<b class="exclamation"><b>!</b></b> <b style="text-transform:capitalize">${field}</b> field is required`;
       }
       flag = true;
     } else {
@@ -237,8 +258,7 @@ addEmployee?.addEventListener("click", (e) => {
   let imageWrapper = document.querySelector(".left-wrapper .img-wrapper img");
   imageWrapper.src = "images/user-profile.jpg";
 });
-
-let displayTableData = (data) => {
+function displayTableData(data) {
   exportData = data;
   let innerData = ` 
           <tr>
@@ -415,11 +435,9 @@ let displayTableData = (data) => {
   else {
     if (employeeTableData) employeeTableData.innerHTML = innerData;
   }
-};
-
+}
 let prevEditViewBtn;
 var tableDataDelete;
-
 let editOrView = (e) => {
   e = e.parentNode;
   if (prevEditViewBtn && prevEditViewBtn == e) {
@@ -434,18 +452,17 @@ let editOrView = (e) => {
   tableDataDelete = document.querySelector(".view-toggle div .delete");
   prevEditViewBtn = e;
 };
-
 let editOrHide = (e, empno) => {
   e = e.parentNode;
   let tableDataDelete = document.querySelector(`span#emp-${empno}`);
   tableDataDelete.addEventListener("click", () => {
-    let filterArray = exportData.filter((ele) => {
+    let filterArray = allEmployeeData.filter((ele) => {
       return ele.empno != empno;
     });
+    allEmployeeData = filterArray;
     displayTable(filterArray);
   });
 };
-
 let exportDataToCSV = () => {
   let csvFile = "User, Location, Departmant, Role, Emp No, Status, Join Dt \n";
   exportData.forEach((ele) => {
@@ -466,33 +483,47 @@ let exportDataToCSV = () => {
   element.download = "EmployeeData.csv";
   element.click();
 };
-
+let prevFilterButton;
+let filterButtonsAdder = () => {
+  let filterButtons = document.querySelector(".filter-buttons-wrapper");
+  for (let i = 65; i <= 90; i++) {
+    let ele = document.createElement("button");
+    ele.innerText = String.fromCharCode(i);
+    filterButtons?.append(ele);
+    ele.addEventListener("click", () => {
+      if (prevFilterButton) prevFilterButton.classList.remove("active");
+      ele.classList.add("active");
+      prevFilterButton = ele;
+      let filterData = allEmployeeData.filter((data) => {
+        return data.firstname
+          .toLowerCase()
+          .startsWith(ele.innerText.toLowerCase());
+      });
+      displayTable(filterData);
+    });
+  }
+};
+filterButtonsAdder();
+let removeFilter = (e, eve) => {
+  if (prevFilterButton) prevFilterButton.classList.remove("active");
+  displayTable();
+  if (eve == "focus") {
+    e.style.background = "rgb(234, 235, 238)";
+    e.children[0].style.filter = "grayscale(100%)";
+  } else {
+    e.style.background = "";
+    e.children[0].style.filter = "grayscale(0%)";
+  }
+};
 let displayTable = (...data) => {
   if (data.length != 0) {
     displayTableData(...data);
   } else {
-    displayTableData(getEmployeeData());
+    displayTableData(allEmployeeData);
   }
 };
-
-let prevFilterButton;
-
-filterButtons.forEach((ele) => {
-  ele.addEventListener("click", () => {
-    if (prevFilterButton) prevFilterButton.classList.remove("active");
-    ele.classList.add("active");
-    prevFilterButton = ele;
-    let filterData = getEmployeeData().filter((data) => {
-      return data.firstname
-        .toLowerCase()
-        .startsWith(ele.innerText.toLowerCase());
-    });
-    displayTable(filterData);
-  });
-});
-
 let sortData = (key, ord) => {
-  let sorteddata = exportData.sort(function (a, b) {
+  let sorteddata = allEmployeeData.sort(function (a, b) {
     let a1, a2;
     if (key == "name") {
       a1 = a.firstname + " " + a.lastname;
@@ -510,11 +541,8 @@ let sortData = (key, ord) => {
   });
   displayTable(sorteddata);
 };
-
 displayTable();
-
 let deleteButton = document.querySelector(".delete-modifier button");
-
 deleteButton?.addEventListener("click", () => {
   let tableCheckbox = document.querySelectorAll("input.table-checkbox");
   let employeeCheckedDetails = [];
@@ -524,15 +552,16 @@ deleteButton?.addEventListener("click", () => {
         ele.parentNode.parentNode.parentNode.children[5].innerText
       );
   });
-  let deletedEmployee = exportData;
+  let unDeletedEmployees = allEmployeeData;
   employeeCheckedDetails.forEach((ele) => {
-    deletedEmployee = deletedEmployee.filter((emp) => {
+    unDeletedEmployees = unDeletedEmployees.filter((emp) => {
       return ele != emp.empno;
     });
   });
-  displayTable(deletedEmployee);
+  allEmployeeData = unDeletedEmployees;
+  displayTable(unDeletedEmployees);
+  employeeCheckBox();
 });
-
 let employeeCheckBox = (e) => {
   let tableCheckbox = document.querySelectorAll("input.table-checkbox");
   e &&

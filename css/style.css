@@ -535,6 +535,10 @@ body .container {
 .filter-aplhabets button:has(img) {
   transition: all 0.3s ease-in-out;
   background: none;
+  scale: .8;
+}
+.filter-aplhabets button img {
+  scale: 1.4;
 }
 .filter-aplhabets button:has(img).active {
   background: rgba(152, 151, 151, 0.468);
