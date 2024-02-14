@@ -28,7 +28,6 @@ body .container {
   position: sticky;
   top: 0;
   z-index: 11;
-  overflow-x: hidden;
 }
 /* sidebar css start */
 .sidebar .logo {
@@ -38,12 +37,42 @@ body .container {
   z-index: 10;
   background: #fff;
 }
+.sidebar .logo a {
+  display: flex;
+  align-items: center;
+}
+.sidebar .logo a img:nth-child(1) {
+  scale: 1;
+  transition: all 0.2s ease-in-out;
+  height: 35px;
+}
+.sidebar .logo a img:nth-child(2) {
+  transition: all 0.2s ease-in-out;
+  scale: 0;
+  width: 0;
+  height: 0;
+}
+.sidebar-toggle .logo {
+  padding: 10px;
+}
+.sidebar-toggle .logo a img:nth-child(1) {
+  scale: 0;
+  width: 0;
+  height: 0;
+  transition: all 0.2s ease-in-out;
+}
+.sidebar-toggle .logo a img:nth-child(2) {
+  transition: all 0.2s ease-in-out;
+  height: 35px;
+  width: 150px;
+  scale: 1;
+}
 .sidebar-toggle #management .title span {
   display: none;
 }
 .sidebar .logo img[alt="direction"] {
-  position: fixed;
-  left: 240px;
+  position: absolute;
+  right: -15px;
   width: 2rem;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
@@ -287,6 +316,7 @@ body .container {
   width: 80%;
   background: #fcfcfc;
   position: relative;
+  z-index: 9;
 }
 .main-content .search-header {
   width: 100%;
@@ -536,7 +566,7 @@ body .container {
 .filter-aplhabets button:has(img) {
   transition: all 0.3s ease-in-out;
   background: none;
-  scale: .8;
+  scale: 0.8;
 }
 .filter-aplhabets button img {
   scale: 1.4;
@@ -824,19 +854,13 @@ input[id="dropdown-select"] {
   border: none;
   border-radius: 5px;
   font-size: 12px;
-  cursor: pointer;
   padding: 7px 13px;
 }
 .table-body table tr {
   position: relative;
 }
-.table-body table tr td button:hover {
-  background: #c8eccb;
-  color: #373d3b;
-}
 .view-edit {
   cursor: pointer;
-  /* position: relative; */
 }
 .view-edit div {
   position: absolute;
