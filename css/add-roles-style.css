@@ -152,13 +152,13 @@ textarea.input-form-element {
   align-items: center;
   gap: 5px;
   height: 100%;
-  overflow: hidden;
   padding-left: 2px;
   overflow-x: scroll;
 }
 .role-adder .assign-employees .employee-bubble .employee-card {
   position: relative;
   display: flex;
+  left: 40%;
   align-items: center;
   justify-content: space-between;
   padding: 2px;
@@ -201,4 +201,7 @@ textarea.input-form-element {
   outline: none;
   background: #fafbfc;
   width: 100%;
+}
+.input-form-element:has(#employee-search:focus) {
+  border: 2px solid #6cacff;
 }

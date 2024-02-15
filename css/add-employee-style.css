@@ -159,6 +159,27 @@
   background: #f44848;
   color: #ffffff;
 }
+#editOrDelete .delete{
+  border: none;
+  outline: none;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background: #f44848;
+  color: #ffffff;
+  margin: 0 10px;
+}
+#editOrDelete .edit{
+  border: none;
+  outline: none;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 4px;
+  background: #48b8f4;
+  color: #ffffff;
+}
 .drop-down-arrow {
   position: relative;
 }

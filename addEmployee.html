@@ -78,8 +78,7 @@
             <div class="icon">
               <i class="fa-solid fa-circle-check"></i>
             </div>
-            <!-- <button onclick="toastToggle()">&times;</button> -->
-            <div class="message">Employee Added Successfully</div>
+            <div class="message"></div>
           </div>
         </div>
         <div class="search-header">
@@ -220,6 +219,7 @@
             <div class="right-wrapper">
               <form id="employeeForm">
                 <div class="title">Personal information</div>
+                <div id="editOrDelete"></div>
                 <div class="employee-information">
                   <div class="name employee-number">
                     <label>Emp No</label>
@@ -352,28 +352,35 @@
                   <div class="details">
                     <div class="input-form">
                       <label>Assign Manager</label>
-                      <input
-                        type="text"
+                      <select
                         class="input-form-element"
                         name="assignManager"
-                        placeholder="Search"
                         onchange="changeData(this.value,this.name)"
-                      />
+                      >
+                        <option value="">Select</option>
+                        <option value="Bhagavan">Bhagavan</option>
+                        <option value="Ranadher">Ranadher</option>
+                        <option value="Sathwik">Sathwik</option>
+                      </select>
                     </div>
                     <div class="input-form">
                       <label>Assign Project</label>
-                      <input
-                        type="text"
-                        class="input-form-element drop-down-arrow"
+                      <select
+                        class="input-form-element"
                         name="assignProject"
-                        placeholder="Search"
                         onchange="changeData(this.value,this.name)"
-                      />
+                      >
+                        <option value="">Select</option>
+                        <option value="Project 1">Project 1</option>
+                        <option value="Project 2">Project 2</option>
+                        <option value="Project 3">Project 3</option>
+                        <option value="Project 4">Project 4</option>
+                      </select>
                     </div>
                   </div>
                   <div class="btn-wrapper">
                     <div class="cancel">
-                      <button type="reset">Cancel</button>
+                      <button onclick="resetForm()" type="reset">Cancel</button>
                     </div>
                     <div class="add-employee">
                       <button class="form-add-employee">Add Employee</button>
@@ -386,6 +393,8 @@
         </div>
       </div>
     </div>
+
     <script src="js/script.js"></script>
+    <script src="js/add-employee-script.js"></script>
   </body>
 </html>

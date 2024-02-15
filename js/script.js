@@ -1,131 +1,30 @@
-let inputEmployeeSearch = document.querySelector(
-  '.assign-employees input[name="employee-search"]'
-);
 function getEmployeeData() {
   return JSON.parse(localStorage.getItem("EmployeeData")) || [];
 }
+
 function setEmployeeData(data) {
   localStorage.setItem("EmployeeData", JSON.stringify(data));
 }
+
 let employees = getEmployeeData();
-inputEmployeeSearch?.addEventListener("keyup", (e) => {
-  document.querySelector(".search-employee-data").style.display = "flex";
-  let filterArray = [];
-  if (e.target.value) {
-    employees.forEach((element) => {
-      let name = element.firstname + element.lastname;
-      if (name.toLowerCase().includes(e.target.value.toLowerCase()))
-        filterArray.push(element);
-    });
-  }
-  displayEmployee(filterArray);
-});
-inputEmployeeSearch?.addEventListener("blur", (e) => {
-  if (!e.target.value) {
-    document.querySelector(".search-employee-data").style.display = "none";
-  }
-});
+
 document.querySelector('img[alt="direction"]').addEventListener("click", () => {
   document.querySelector(".sidebar").classList.toggle("sidebar-toggle");
 });
-class Employee {
-  constructor(
-    image,
-    firstname,
-    lastname,
-    email,
-    location,
-    department,
-    role,
-    empno,
-    status,
-    joiningDate
-  ) {
-    this.image = image;
-    this.firstname = firstname;
-    this.lastname = lastname;
-    this.email = email;
-    this.empno = empno;
-    this.location = location;
-    this.department = department;
-    this.status = status;
-    this.role = role;
-    this.joiningDate = joiningDate;
-  }
-}
-function displayEmployee(data) {
-  let empData = "";
-  data.forEach((element) => {
-    empData += `
-<label for="emp${element.empno}" class="employee-card">
-  <div  class="profile">
-    <div class="profile-image">
-      <img
-        src="${element.image ? element.image : "images/user-profile.jpg"}"
-        width="23px"
-        alt="profile"
-      />
-    </div>
-    <div class="name">${element.firstname + " " + element.lastname}</div>
-  </div>
-  <input type="checkbox" onchange="addingRoleToEmployee(${
-    element.empno
-  })" id="emp${element.empno}" ${element.isCheckedRole ? "checked" : ""} />
-</label>`;
-  });
-  document.querySelector(".search-employee-data").innerHTML = empData;
-}
-let removeFromEmployeeBubble = (empno) => {
-  let employee = document.querySelector(`.employee-card #emp${empno}`);
-  employee ? (employee.checked = false) : "";
-  employees.forEach((element) => {
-    element.empno == empno ? (element.isCheckedRole = false) : "";
-  });
-  displayEmployeeRoleBubble();
-};
-function displayEmployeeRoleBubble() {
-  let employeeBubble = document.querySelector(".employee-bubble");
-  employeeBubble.innerHTML = "";
-  let flag = true;
-  employees.forEach((element) => {
-    if (element.isCheckedRole) {
-      flag = false;
-      employeeBubble.innerHTML += `<div class="employee-card">
-        <div>
-          <img
-            src=${element.image ? element.image : "images/user-profile.jpg"}
-            alt="profile"
-          />
-          <div class="name">${element.firstname}</div>
-        </div>
-        <button onclick="removeFromEmployeeBubble(${
-          element.empno
-        })">&times;</button>
-      </div>`;
-    }
-  });
-  employeeBubble.style.display = flag ? "none" : "flex";
-  inputEmployeeSearch.style.minWidth = flag ? "100%" : "calc(100% - 147px)";
-  employeeBubble.style.maxWidth = flag ? "0" : "fit-content";
-}
-let addingRoleToEmployee = (empno) => {
-  employees.forEach((employee) => {
-    if (employee.empno == empno) {
-      document.querySelector(`.employee-card #emp${empno}`).checked
-        ? (employee.isCheckedRole = true)
-        : (employee.isCheckedRole = false);
-    }
-  });
-  displayEmployeeRoleBubble();
-};
+
 var exportData;
+
+var employeeFilteredData = employees;
+
 let filterDropdown = {};
+
 let EmployeeDropdown = (value, key) => {
   filterDropdown[key] = value;
 };
+
 function applyEmployeeFilter() {
   let filteredData = [];
-  employees.forEach((element) => {
+  employeeFilteredData.forEach((element) => {
     let flag = true;
     for (let key in filterDropdown) {
       if (filterDropdown[key] && element[key] != filterDropdown[key])
@@ -135,128 +34,12 @@ function applyEmployeeFilter() {
   });
   displayTable(filteredData);
 }
+
 let removeEmployeeFilter = () => {
   filterDropdown = {};
-  displayTable(employees);
+  displayTable(employeeFilteredData);
 };
-let formEmployee = { status: "Active" };
-let changeData = (value, name) => {
-  formEmployee[name] = value;
-};
-function validateEmail(email) {
-  pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-  let element = document.querySelector(
-    `.employee-information .input-form-element[name="email"]`
-  );
-  let spanCheck = document.querySelector(
-    `.employee-information .input-form-element[name="email"]+span[name="email"]`
-  );
-  if (!pattern.test(email)) {
-    if (spanCheck) {
-      spanCheck.innerHTML = `<b class="exclamation"><b>!</b></b> please enter valid email address`;
-    } else {
-      let span = document.createElement("span");
-      span.setAttribute("name", "email");
-      element.parentNode.appendChild(span);
-      span.innerHTML = `<b class="exclamation"><b>!</b></b> please enter field is required`;
-    }
-    return;
-  }
-  element.parentNode.removeChild(spanCheck);
-  return true;
-}
-function validateFirstname(name) {
-  let element = document.querySelector(
-    `.employee-information .input-form-element[name="firstname"]`
-  );
-  let spanCheck = document.querySelector(
-    `.employee-information .input-form-element[name="firstname"]+span[name="firstname"]`
-  );
-  if (name.length <= 3) {
-    if (spanCheck) {
-      spanCheck.innerHTML = `<b class="exclamation"><b>!</b></b> length should be greater then three`;
-    } else {
-      let span = document.createElement("span");
-      span.setAttribute("name", "firstname");
-      element.parentNode.appendChild(span);
-      span.innerHTML = `<b class="exclamation"><b>!</b></b> length should be greater then three`;
-    }
-    return;
-  }
-  element.parentNode.removeChild(spanCheck);
-  return true;
-}
-let imageChange = (imagedata) => {
-  let imageWrapper = document.querySelector(".left-wrapper .img-wrapper img");
-  let file = imagedata.files[0];
-  let reader = new FileReader(file);
-  reader.readAsDataURL(file);
-  reader.onload = () => {
-    imageWrapper.src = reader.result;
-    formEmployee["image"] = reader.result;
-  };
-  reader.onerror = () => {
-    alert("Please upload the image again!");
-  };
-};
-let requiredFields = ["empno", "email", "firstname", "lastname", "joiningDate"];
-let addEmployee = document.querySelector(".form-add-employee");
-addEmployee?.addEventListener("click", (e) => {
-  e.preventDefault();
-  let flag = false;
-  for (let field of requiredFields) {
-    let spanCheck = document.querySelector(
-      `.input-form-element+span[name="${field}"]`
-    );
-    let element = document.querySelector(
-      `.input-form-element[name="${field}"]`
-    );
-    if (!formEmployee[field]) {
-      let span = document.createElement("span");
-      span.setAttribute("name", field);
-      if (!spanCheck) {
-        element.parentNode.appendChild(span);
-        span.innerHTML = `<b class="exclamation"><b>!</b></b> <b style="text-transform:capitalize">${field}</b> field is required`;
-      } else {
-        spanCheck.innerHTML = `<b class="exclamation"><b>!</b></b> <b style="text-transform:capitalize">${field}</b> field is required`;
-      }
-      flag = true;
-    } else {
-      if (field != "email" && field != "firstname") {
-        if (spanCheck) element.parentNode.removeChild(spanCheck);
-      } else {
-        let val = validateFirstname(formEmployee["firstname"]);
-        val = validateEmail(formEmployee["email"]);
-        if (!val) return;
-      }
-    }
-  }
-  if (flag) return;
-  let employee = new Employee(
-    formEmployee.image,
-    formEmployee.firstname,
-    formEmployee.lastname,
-    formEmployee.email,
-    formEmployee.location,
-    formEmployee.department,
-    formEmployee.jobTitle,
-    formEmployee.empno,
-    formEmployee.status,
-    formEmployee.joiningDate
-  );
-  let employeeData = getEmployeeData();
-  employeeData.push(employee);
-  setEmployeeData(employeeData);
-  formEmployee = { status: "Active" };
-  toastToggle();
-  setTimeout(() => {
-    toastToggle();
-    document.querySelector("#employeeForm").reset();
-    let imageWrapper = document.querySelector(".left-wrapper .img-wrapper img");
-    imageWrapper.src = "images/user-profile.jpg";
-  }, 1500);
-});
 function displayTableData(data) {
   exportData = data;
   let innerData = ` 
@@ -418,12 +201,14 @@ function displayTableData(data) {
           <td class="view-edit">
             <button onclick="editOrView(this,${
               element.empno
-            })" onblur="editOrHide()">
+            })" onblur="editOrHide(this)">
                 <i class="fa-solid fa-ellipsis"></i>
                 <div>
-                  <span>View&nbsp;Details </span>
-                  <span>Edit </span>
-                  <span class="delete" id="emp-${element.empno}">Delete</span>
+                  <span id="viewemp-${element.empno}">View&nbsp;Details </span>
+                  <span id="editemp-${element.empno}">Edit </span>
+                  <span class="delete" id="deleteemp-${
+                    element.empno
+                  }">Delete</span>
                 </div>
             </button>
           </td>
@@ -439,17 +224,35 @@ function displayTableData(data) {
     employeeTableData ? (employeeTableData.innerHTML = innerData) : "";
   }
 }
+
 let prevEditViewBtn;
+
 let editOrView = (e, empno) => {
   e = e.parentNode;
-  let tableDataDelete = document.querySelector(`span#emp-${empno}`);
+  let tableDataDelete = document.querySelector(`span#deleteemp-${empno}`);
+  let tableDataEdit = document.querySelector(`span#editemp-${empno}`);
+  let tableDataView = document.querySelector(`span#viewemp-${empno}`);
   tableDataDelete?.addEventListener("click", () => {
     let filterArray = employees.filter((element) => {
       return element.empno != empno;
     });
+    let unDeletedEmployee = employeeFilteredData.filter((element) => {
+      return element.empno != empno;
+    });
     employees = filterArray;
-    displayTable(filterArray);
+    employeeFilteredData = unDeletedEmployee;
+    displayTable(unDeletedEmployee);
     return;
+  });
+  tableDataEdit?.addEventListener("click", () => {
+    localStorage.setItem("mode", "edit");
+    localStorage.setItem("empid", empno);
+    window.location = "addEmployee.html";
+  });
+  tableDataView?.addEventListener("click", () => {
+    localStorage.setItem("mode", "view");
+    localStorage.setItem("empid", empno);
+    window.location = "addEmployee.html";
   });
   if (prevEditViewBtn && prevEditViewBtn == e) {
     prevEditViewBtn.classList.toggle("view-toggle");
@@ -459,18 +262,21 @@ let editOrView = (e, empno) => {
     prevEditViewBtn.classList.remove("view-toggle");
   }
   e.classList.add("view-toggle");
-  tableDataDelete = document.querySelector(".view-toggle div .delete");
   prevEditViewBtn = e;
 };
+
 let editOrHide = () => {
   if (prevEditViewBtn && prevEditViewBtn.classList.contains("view-toggle")) {
     prevEditViewBtn.classList.remove("view-toggle");
   }
 };
+
 let exportDataToCSV = () => {
-  let csvFile = "User, Location, Departmant, Role, Emp No, Status, Join Dt \n";
-  exportData.forEach((element) => {
+  let csvFile =
+    "Sno, User, Location, Departmant, Role, Employee ID, Status, Join Dt \n";
+  exportData.forEach((element, i) => {
     let arr = [];
+    arr.push(i + 1);
     arr.push(element.firstname + " " + element.lastname);
     arr.push(element.location);
     arr.push(element.department);
@@ -487,7 +293,9 @@ let exportDataToCSV = () => {
   element.download = "EmployeeData.csv";
   element.click();
 };
+
 let prevFilterButton;
+
 let filterButtonsAdder = () => {
   let filterButtons = document.querySelector(".filter-buttons-wrapper");
   for (let i = 65; i <= 90; i++) {
@@ -495,7 +303,7 @@ let filterButtonsAdder = () => {
     element.innerText = String.fromCharCode(i);
     filterButtons?.append(element);
     element.addEventListener("click", () => {
-      if (prevFilterButton) prevFilterButton.classList.remove("active");
+      prevFilterButton ? prevFilterButton.classList.remove("active") : "";
       element.classList.add("active");
       prevFilterButton = element;
       let filterData = employees.filter((data) => {
@@ -503,11 +311,14 @@ let filterButtonsAdder = () => {
           .toLowerCase()
           .startsWith(element.innerText.toLowerCase());
       });
+      employeeFilteredData = filterData;
       displayTable(filterData);
     });
   }
 };
+
 filterButtonsAdder();
+
 let removeFilter = (e, eve) => {
   if (prevFilterButton) prevFilterButton.classList.remove("active");
   displayTable();
@@ -519,6 +330,7 @@ let removeFilter = (e, eve) => {
     e.children[0].style.filter = "grayscale(0%)";
   }
 };
+
 let displayTable = (...data) => {
   if (data.length != 0) {
     displayTableData(...data);
@@ -526,8 +338,9 @@ let displayTable = (...data) => {
     displayTableData(employees);
   }
 };
+
 function sortData(key, ord) {
-  let sorteddata = employees.sort(function (a, b) {
+  let sorteddata = exportData.sort(function (a, b) {
     let a1, a2;
     if (key == "name") {
       a1 = a.firstname + " " + a.lastname;
@@ -545,8 +358,11 @@ function sortData(key, ord) {
   });
   displayTable(sorteddata);
 }
+
 displayTable();
+
 let deleteButton = document.querySelector(".delete-modifier button");
+
 deleteButton?.addEventListener("click", () => {
   let tableCheckbox = document.querySelectorAll("input.table-checkbox");
   let employeeCheckedDetails = [];
@@ -562,10 +378,19 @@ deleteButton?.addEventListener("click", () => {
       return element != emp.empno;
     });
   });
+  let unDeletedFilteredEmployees = employeeFilteredData;
+  employeeCheckedDetails.forEach((element) => {
+    unDeletedFilteredEmployees = unDeletedFilteredEmployees.filter((emp) => {
+      return element != emp.empno;
+    });
+  });
   employees = unDeletedEmployees;
-  displayTable(unDeletedEmployees);
+  employeeFilteredData = unDeletedEmployees;
+  displayTable(unDeletedFilteredEmployees);
+  // setEmployeeData(unDeletedEmployees)
   employeeCheckBox();
 });
+
 let employeeCheckBox = (e) => {
   let tableCheckbox = document.querySelectorAll("input.table-checkbox");
   e &&
@@ -581,6 +406,7 @@ let employeeCheckBox = (e) => {
     ? deleteButton.removeAttribute("disabled")
     : deleteButton.setAttribute("disabled", "true");
 };
-function toastToggle() {
-  document.querySelector(".toast").classList.toggle("toast-toggle");
-}
+
+window.location.pathname != "/addEmployee.html"
+  ? (localStorage.removeItem("mode"), localStorage.removeItem("empid"))
+  : "";
