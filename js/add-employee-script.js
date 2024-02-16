@@ -29,6 +29,8 @@ class Employee {
     email,
     location,
     department,
+    dob,
+    mobile,
     role,
     empno,
     status,
@@ -42,6 +44,8 @@ class Employee {
     this.email = email;
     this.empno = empno;
     this.location = location;
+    this.mobile = mobile;
+    this.dob = dob;
     this.department = department;
     this.status = status;
     this.role = role;
@@ -153,7 +157,7 @@ function resetForm() {
   }
 }
 
-addEmployee?.addEventListener("click", (e) => {
+addEmployee.addEventListener("click", (e) => {
   e.preventDefault();
   let flag = false;
   for (let field of requiredFields) {
@@ -194,6 +198,8 @@ addEmployee?.addEventListener("click", (e) => {
     formEmployee.email,
     formEmployee.location,
     formEmployee.department,
+    formEmployee.mobile,
+    formEmployee.dob,
     formEmployee.jobTitle,
     formEmployee.empno,
     formEmployee.status,
@@ -214,6 +220,9 @@ addEmployee?.addEventListener("click", (e) => {
     toastToggle(message);
     resetForm();
   }, 1500);
+  mode == "edit"
+    ? (localStorage.setItem("mode", "view"), window.location.reload())
+    : "";
 });
 
 function toastToggle(message) {

@@ -1,4 +1,4 @@
-let inputEmployeeSearch = document.querySelector(
+var inputEmployeeSearch = document.querySelector(
   '.assign-employees input[name="employee-search"]'
 );
 
@@ -10,9 +10,9 @@ function setEmployeeData(data) {
   localStorage.setItem("EmployeeData", JSON.stringify(data));
 }
 
-let employees = getEmployeeData();
+var employees = getEmployeeData();
 
-inputEmployeeSearch?.addEventListener("keyup", (e) => {
+inputEmployeeSearch.addEventListener("keyup", (e) => {
   document.querySelector(".search-employee-data").style.display = "flex";
   let filterArray = [];
   if (e.target.value) {
@@ -25,7 +25,7 @@ inputEmployeeSearch?.addEventListener("keyup", (e) => {
   displayEmployee(filterArray);
 });
 
-inputEmployeeSearch?.addEventListener("blur", (e) => {
+inputEmployeeSearch.addEventListener("blur", (e) => {
   if (!e.target.value) {
     document.querySelector(".search-employee-data").style.display = "none";
   }

@@ -6,7 +6,7 @@ function setEmployeeData(data) {
   localStorage.setItem("EmployeeData", JSON.stringify(data));
 }
 
-let employees = getEmployeeData();
+var employees = getEmployeeData();
 
 document.querySelector('img[alt="direction"]').addEventListener("click", () => {
   document.querySelector(".sidebar").classList.toggle("sidebar-toggle");
@@ -165,7 +165,11 @@ function displayTableData(data) {
         <tr>
           <td>
             <div class="table-check-box">
-              <input type="checkbox" class="table-checkbox" onchange="employeeCheckBox()" />
+              <input type="checkbox" class="table-checkbox ${
+                element.empno
+              }" onchange="employeeCheckBox()" ${
+      element.isEmployeeChecked ? "checked" : ""
+    } />
             </div>
           </td>
           <td>
@@ -399,8 +403,16 @@ let employeeCheckBox = (e) => {
       else element.checked = false;
     });
   let flag = false;
+  let checkedEmployees = [];
   tableCheckbox.forEach((data) => {
-    data.checked ? (flag = true) : "";
+    data.checked
+      ? ((flag = true), checkedEmployees.push([data.classList[1], true]))
+      : checkedEmployees.push([data.classList[1], false]);
+  });
+  employees.forEach((employee, i) => {
+    checkedEmployees[i][1]
+      ? (employee.isEmployeeChecked = true)
+      : (employee.isEmployeeChecked = false);
   });
   flag
     ? deleteButton.removeAttribute("disabled")
