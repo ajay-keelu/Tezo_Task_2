@@ -1,17 +1,18 @@
-var inputEmployeeSearch = document.querySelector(
-  '.assign-employees input[name="employee-search"]'
-);
-
+var inputEmployeeSearch = document.querySelector('.assign-employees input[name="employee-search"]');
 function getEmployeeData() {
   return JSON.parse(localStorage.getItem("EmployeeData")) || [];
 }
-
+function getRoles() {
+  return JSON.parse(localStorage.getItem("RolesData")) || [];
+}
 function setEmployeeData(data) {
   localStorage.setItem("EmployeeData", JSON.stringify(data));
 }
-
+function setRoles(data) {
+  localStorage.setItem("RolesData", JSON.stringify(data));
+}
 var employees = getEmployeeData();
-
+var roles = getRoles();
 inputEmployeeSearch.addEventListener("keyup", (e) => {
   document.querySelector(".search-employee-data").style.display = "flex";
   let filterArray = [];
@@ -23,14 +24,12 @@ inputEmployeeSearch.addEventListener("keyup", (e) => {
     });
   }
   displayEmployee(filterArray);
-});
-
+})
 inputEmployeeSearch.addEventListener("blur", (e) => {
   if (!e.target.value) {
     document.querySelector(".search-employee-data").style.display = "none";
   }
-});
-
+})
 function displayEmployee(data) {
   let empData = "";
   data.forEach((element) => {
@@ -38,31 +37,23 @@ function displayEmployee(data) {
   <label for="emp${element.empno}" class="employee-card">
     <div  class="profile">
       <div class="profile-image">
-        <img
-          src="${element.image ? element.image : "images/user-profile.jpg"}"
-          width="23px"
-          alt="profile"
-        />
+        <img src="${element.image ? element.image : "images/user-profile.jpg"}" width="23px" alt="profile" />
       </div>
       <div class="name">${element.firstname + " " + element.lastname}</div>
     </div>
-    <input type="checkbox" onchange="addingRoleToEmployee(${
-      element.empno
-    })" id="emp${element.empno}" ${element.isCheckedRole ? "checked" : ""} />
+    <input type="checkbox" onchange="addingRoleToEmployee(${element.empno})" id="emp${element.empno}" ${element.isCheckedRole ? "checked" : ""} />
   </label>`;
   });
   document.querySelector(".search-employee-data").innerHTML = empData;
 }
-
-let removeFromEmployeeBubble = (empno) => {
+function removeFromEmployeeBubble(empno) {
   let employee = document.querySelector(`.employee-card #emp${empno}`);
   employee ? (employee.checked = false) : "";
   employees.forEach((element) => {
     element.empno == empno ? (element.isCheckedRole = false) : "";
   });
   displayEmployeeRoleBubble();
-};
-
+}
 function displayEmployeeRoleBubble() {
   let employeeBubble = document.querySelector(".employee-bubble");
   employeeBubble.innerHTML = "";
@@ -70,17 +61,13 @@ function displayEmployeeRoleBubble() {
   employees.forEach((element) => {
     if (element.isCheckedRole) {
       flag = false;
-      employeeBubble.innerHTML += `<div class="employee-card">
+      employeeBubble.innerHTML += `
+        <div class="employee-card">
           <div>
-            <img
-              src=${element.image ? element.image : "images/user-profile.jpg"}
-              alt="profile"
-            />
+            <img src=${element.image ? element.image : "images/user-profile.jpg"} alt="profile" />
             <div class="name">${element.firstname}</div>
           </div>
-          <button onclick="removeFromEmployeeBubble(${
-            element.empno
-          })">&times;</button>
+          <button onclick="removeFromEmployeeBubble(${element.empno})">x</button>
         </div>`;
     }
   });
@@ -88,8 +75,7 @@ function displayEmployeeRoleBubble() {
   inputEmployeeSearch.style.maxWidth = flag ? "100%" : "calc(100% - 147px)";
   employeeBubble.style.width = flag ? "0" : "147px";
 }
-
-let addingRoleToEmployee = (empno) => {
+function addingRoleToEmployee(empno) {
   employees.forEach((employee) => {
     if (employee.empno == empno) {
       document.querySelector(`.employee-card #emp${empno}`).checked
@@ -98,4 +84,8 @@ let addingRoleToEmployee = (empno) => {
     }
   });
   displayEmployeeRoleBubble();
-};
+}
+let role = {}
+function getRoleData(value, key) {
+  role[key] = value;
+}

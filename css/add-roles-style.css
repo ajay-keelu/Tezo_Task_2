@@ -2,9 +2,11 @@
   width: 100%;
   padding: 20px;
 }
+
 .role-adder .title {
   font-weight: 700;
 }
+
 .role-adder .role-department {
   width: 100%;
   display: flex;
@@ -12,39 +14,47 @@
   gap: 30px;
   padding: 20px 0;
 }
+
 .role-adder .role-detail {
   display: flex;
   align-items: flex-start;
   flex-direction: column;
   width: 30%;
 }
+
 .role-adder .role-detail label {
   font-size: 12px;
   padding: 5px 2px;
   font-weight: 600;
 }
+
 .role-adder .role-detail .input-form-element {
   width: 100%;
 }
+
 textarea.input-form-element {
   width: 625px !important;
   min-height: 100px;
   max-height: 200px;
   resize: vertical;
 }
+
 .assign-employees .input-form-element {
   width: 100%;
 }
+
 .assign-employees {
   position: relative;
 }
-.assign-employees > div {
+
+.assign-employees>div {
   display: flex;
   width: 100%;
   align-items: center;
   position: relative;
 }
-.assign-employees > div > label {
+
+.assign-employees>div>label {
   position: absolute;
   cursor: pointer;
   right: 4px;
@@ -57,6 +67,7 @@ textarea.input-form-element {
   justify-content: center;
   background: #fafbfc;
 }
+
 .role-adder .btn-wrapper .add-employee button {
   border: none;
   outline: none;
@@ -67,6 +78,7 @@ textarea.input-form-element {
   background: #f44848;
   color: #ffffff;
 }
+
 .role-adder .btn-wrapper .cancel button {
   background: #fbebeb;
   color: #f55a5a;
@@ -77,6 +89,7 @@ textarea.input-form-element {
   padding: 8px 35px;
   border-radius: 4px;
 }
+
 .role-adder .btn-wrapper {
   width: 100%;
   display: flex;
@@ -85,6 +98,7 @@ textarea.input-form-element {
   justify-content: flex-end;
   gap: 15px;
 }
+
 .role-adder .search-employee-data {
   max-height: 100px;
   width: 100%;
@@ -97,6 +111,7 @@ textarea.input-form-element {
   position: absolute;
   display: none;
 }
+
 .role-adder .assign-employees .employee-bubble::-webkit-scrollbar,
 .role-adder .assign-employees .employee-bubble::-webkit-scrollbar:horizontal,
 .role-adder .search-employee-data::-webkit-scrollbar,
@@ -104,14 +119,14 @@ textarea.input-form-element {
   width: 2px;
   height: 2px;
 }
+
 .role-adder .search-employee-data::-webkit-scrollbar-track,
 .role-adder .assign-employees .employee-bubble::-webkit-scrollbar-track,
-.role-adder
-  .assign-employees
-  .employee-bubble::-webkit-scrollbar-track:horizontal,
+.role-adder .assign-employees .employee-bubble::-webkit-scrollbar-track:horizontal,
 .role-adder .search-employee-data::-webkit-scrollbar-track:horizontal {
   display: none;
 }
+
 /* .role-adder .assign-employees .employee-bubble::-webkit-scrollbar-thumb, */
 /* .role-adder
   .assign-employees
@@ -120,6 +135,7 @@ textarea.input-form-element {
 .role-adder .search-employee-data::-webkit-scrollbar-thumb:horizontal {
   background-color: #ff9f9f;
 }
+
 .role-adder .search-employee-data .employee-card {
   padding: 3px 5px;
   border: 1.5px solid lightgrey;
@@ -129,24 +145,28 @@ textarea.input-form-element {
   justify-content: space-between;
   cursor: pointer;
 }
+
 .role-adder .search-employee-data .employee-card .profile {
   width: 80%;
   display: flex;
   align-items: center;
   gap: 5px;
 }
+
 .role-adder .search-employee-data .employee-card .profile .profile-image {
   width: 25px;
   aspect-ratio: 1;
   border-radius: 30px;
   overflow: hidden;
 }
+
 .role-adder .search-employee-data .employee-card .profile .name {
   color: #293b5b;
   font-weight: 500;
   font-size: 10px;
   text-transform: capitalize;
 }
+
 .role-adder .assign-employees .employee-bubble {
   display: none;
   align-items: center;
@@ -155,6 +175,7 @@ textarea.input-form-element {
   padding-left: 2px;
   overflow-x: scroll;
 }
+
 .role-adder .assign-employees .employee-bubble .employee-card {
   position: relative;
   display: flex;
@@ -166,11 +187,13 @@ textarea.input-form-element {
   box-shadow: inset 0 5px 10px 0 rgba(207, 206, 206, 0.55),
     inset 0 -5px 10px 0 rgba(207, 206, 206, 0.55);
 }
+
 .role-adder .assign-employees .employee-bubble .employee-card div {
   display: flex;
   align-items: center;
   gap: 2px;
 }
+
 .role-adder .assign-employees .employee-bubble .employee-card img {
   aspect-ratio: 1;
   width: 15px;
@@ -181,6 +204,7 @@ textarea.input-form-element {
   font-size: 9px;
   white-space: nowrap;
 }
+
 .role-adder .assign-employees .employee-bubble .employee-card button {
   aspect-ratio: 1;
   height: 15px;
@@ -196,12 +220,14 @@ textarea.input-form-element {
   margin-left: 5px;
   background: transparent;
 }
+
 #employee-search {
   border: none;
   outline: none;
   background: #fafbfc;
   width: 100%;
 }
+
 .input-form-element:has(#employee-search:focus) {
   border: 2px solid #6cacff;
 }
