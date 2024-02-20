@@ -5,12 +5,17 @@ document.querySelector("#sidebarToggle").addEventListener("click", () => {
   document.querySelector(".sidebar").classList.toggle("sidebar-toggle");
 });
 function exportDataToCSV() {
+<<<<<<< Updated upstream
   let csvFile =
     "Sno, User, Location, Departmant, Role, Employee ID, Status, Join Dt \n";
   exportData.forEach((element, i) => {
     csvFile += `${i + 1},${element.firstname + " " + element.lastname}, ${element.location}, ${element.department},${element.role},
     ${element.empno},${element.status},${element.joiningDate}\n`;
   });
+=======
+  let csvFile = "S.No, User, Location, Departmant, Role, Employee ID, Status, Join Dt \n";
+  exportData.forEach((element, i) => csvFile += `${i + 1},${element.firstname + " " + element.lastname}, ${element.location}, ${element.department},${element.role},${element.empno},${element.status},${element.joiningDate}\n`)
+>>>>>>> Stashed changes
   let element = document.createElement("a");
   element.href = "data:text/csv;charset=utf-8," + encodeURI(csvFile);
   element.target = "_blank";
@@ -20,9 +25,7 @@ function exportDataToCSV() {
 function deleteEmployees() {
   let tableCheckbox = document.querySelectorAll("input.table-checkbox");
   let employeeCheckedDetails = [];
-  tableCheckbox.forEach((element) => {
-    element.checked ? employeeCheckedDetails.push(element.classList[1]) : ""
-  });
+  tableCheckbox.forEach((element) => element.checked ? employeeCheckedDetails.push(element.classList[1]) : "")
   let unDeletedEmployees = employees;
   employeeCheckedDetails.forEach((element) => {
     unDeletedEmployees = unDeletedEmployees.filter((emp) => {
@@ -42,21 +45,40 @@ function deleteEmployees() {
 }
 function onFilterAlphabet(alphbet, element) {
   prevFilterButton ? prevFilterButton.classList.remove("active") : "";
+<<<<<<< Updated upstream
   element.classList.add("active");
   prevFilterButton = element;
   let filterData = employees.filter((employee) => {
     return employee.firstname.toLowerCase().startsWith(alphbet);
   });
+=======
+  removeFilter(document.querySelector('.filter-aplhabets button'), "")
+  prevFilterButton = element;
+  let filterData1 = employees.filter((employee) => employee.firstname.toLowerCase().startsWith(alphbet));
+  let filterData = []
+  filterData1.forEach((element) => {
+    let flag = true;
+    for (let key in dropdownFilters) {
+      if (dropdownFilters[key] && element[key] != dropdownFilters[key]) flag = false;
+    }
+    flag ? filterData.push(element) : "";
+  });
+  element.classList.add("active");
+>>>>>>> Stashed changes
   employeeFilteredData = filterData;
   displayEmployeeTableData(filterData);
 }
 function setAlphbetFilters(id) {
   let filterBtnEle = document.getElementById(id);
   let filterbtns = "";
-  for (let i = 65; i <= 90; i++) {
+  for (let i = 65; i <= 90; i++)
     filterbtns += `<button onclick="onFilterAlphabet('${String.fromCharCode(i + 32)}',this)">${String.fromCharCode(i)}</button>`;
+<<<<<<< Updated upstream
   }
   filterBtnEle.innerHTML += filterbtns;
+=======
+  filterBtnEle ? filterBtnEle.innerHTML += filterbtns : "";
+>>>>>>> Stashed changes
 }
 function loadFilters() {
   setAlphbetFilters("filterBtns");

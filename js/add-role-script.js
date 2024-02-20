@@ -89,3 +89,63 @@ let role = {}
 function getRoleData(value, key) {
   role[key] = value;
 }
+<<<<<<< Updated upstream
+=======
+function toastToggle(message) {
+  document.querySelector(".toast").classList.toggle("toast-toggle");
+  document.querySelector(".toast .message").innerText = message;
+}
+let requiredFields = ["role", "department", "description", "location"]
+function resetForm() {
+  document.querySelector("#roleForm").reset();
+  for (let field of requiredFields) {
+    document.querySelector(`#${field}`).removeAttribute('error')
+  }
+  employees.forEach((employee) => employee.isCheckedRole = false)
+  displayEmployeeRoleBubble()
+  displayEmployee([])
+}
+document.querySelector('#addrole').addEventListener('click', (e) => {
+  e.preventDefault()
+  let flag = false;
+  requiredFields.forEach((field => {
+    let spanElement = document.querySelector(`#${field}`);
+    if (!role[field]) {
+      flag = true;
+      spanElement.setAttribute('error', "")
+    } else spanElement.removeAttribute('error')
+  }))
+  if (flag) return;
+  let employeesAssigned = employees.filter(employee => employee.isCheckedRole)
+  role["employeesAssigned"] = employeesAssigned
+  let roleData = new Role(role["role"], role["department"], role["description"], role["location"], role["employeesAssigned"])
+  let rolesData = getRoles();
+  index ? rolesData[index] = roleData : rolesData.push(roleData);
+  setRoles(rolesData)
+  toastToggle(index ? "Role Updated Successfully" : "Role Added Successfully");
+  setTimeout(() => {
+    toastToggle("");
+    resetForm();
+    window.location = "roles.html"
+  }, 1500);
+})
+function editRole(index) {
+  let roleData = getRoles()[index]
+  if(!roleData){
+    window.location = "roles.html"
+  }
+  document.querySelector('#addrole').innerHTML = "Update"
+  document.querySelector('input[name="role"]').value = roleData.roleName;
+  document.querySelector('select[name="department"]').value = roleData.department;
+  document.querySelector('select[name="location"]').value = roleData.location;
+  document.querySelector('textarea[name="description"]').value = roleData.description;
+  let employeesAssigned = roleData.employeesAssigned;
+  let employeeData = getEmployeeData();
+  employeeData.forEach(employee => {
+    employeesAssigned.forEach(emp => employee.empno == emp.empno ? employee.isCheckedRole = true : "")
+  })
+  employees = employeeData
+  role = { ...roleData, 'role': roleData.roleName }
+  displayEmployeeRoleBubble()
+}
+>>>>>>> Stashed changes
