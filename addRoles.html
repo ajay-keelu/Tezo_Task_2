@@ -66,6 +66,14 @@
       </section>
     </div>
     <div class="main-content">
+      <div class="toast">
+        <div class="toast-success">
+          <div class="icon">
+            <img src="images/circle-check.svg" alt="success" />
+          </div>
+          <div class="message"></div>
+        </div>
+      </div>
       <div class="search-header">
         <div class="search-bar">
           <div class="logo">
@@ -168,50 +176,68 @@
         </div>
       </div>
       <div class="role-adder">
-        <form>
+        <form id="roleForm">
           <div class="title">Create New Role</div>
           <div class="role-department">
             <div class="role-detail">
-              <label for="">Role Name</label>
-              <input type="text" placeholder="Text" class="input-form-element" name="role" id=""
+              <label>Role Name</label>
+              <input type="text" placeholder="Text" class="input-form-element" name="role"
                 onchange="getRoleData(this.value,this.name)" />
+              <span id="role">
+                <b class="exclamation"><b>!</b></b> <b style="text-transform:capitalize">Role name</b>
+                field is required
+              </span>
             </div>
             <div class="role-detail">
               <label>Department</label>
               <select class="input-form-element" name="department" onchange="getRoleData(this.value,this.name)">
-                <option value="">UIUX</option>
+                <option value="">Select</option>
+                <option value="UIUX">UIUX</option>
                 <option value="IT">IT</option>
                 <option value="Product Engineering">Product Engg.</option>
               </select>
+              <span id="department">
+                <b class="exclamation"><b>!</b></b> <b style="text-transform:capitalize">department</b>
+                field is required
+              </span>
             </div>
           </div>
           <div class="role-detail description">
             <label>Description</label>
             <textarea name="description" onchange="getRoleData(this.value,this.name)" class="input-form-element"
               placeholder="Text"></textarea>
+            <span id="description">
+              <b class="exclamation"><b>!</b></b> <b style="text-transform:capitalize">description</b>
+              field is required
+            </span>
           </div>
           <div class="location role-detail">
             <label>Location</label>
             <select name="location" class="input-form-element" onchange="getRoleData(this.value,this.name)">
-              <option value="">Hyderabad</option>
-              <option value="">Banglore</option>
-              <option value="">Vijayawada</option>
+              <option value="">Select</option>
+              <option value="Hyderabad">Hyderabad</option>
+              <option value="Banglore">Banglore</option>
+              <option value="Vijayawada">Vijayawada</option>
             </select>
+            <span id="location">
+              <b class="exclamation"><b>!</b></b> <b style="text-transform:capitalize">location</b>
+              field is required
+            </span>
           </div>
           <div class="assign-employees role-detail">
             <label>Assign Employees</label>
             <div class="input-form-element">
-              <input type="text" name="employee-search" id="employee-search" placeholder="Search" />
+              <input type="text" name="employeeSearch" id="employee-search" placeholder="Search" />
               <div class="employee-bubble"></div>
             </div>
             <label for="employee-search" class="search-employee-data"> </label>
           </div>
           <div class="btn-wrapper">
             <div class="cancel">
-              <button type="reset">Cancel</button>
+              <button type="reset" onclick="window.location='roles.html'">Cancel</button>
             </div>
             <div class="add-employee">
-              <button type="submit">Add Role</button>
+              <button id="addrole">Add Role</button>
             </div>
           </div>
         </form>

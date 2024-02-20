@@ -219,7 +219,7 @@ input[type="text"].input-form-element {
   position: relative;
 }
 
-.employee-details .name input:has(+ span) .employee-details .name input:has(+ span) {
+.employee-details .name input:has(+ span) {
   border-color: #de350b;
 }
 
@@ -262,7 +262,6 @@ input[type="text"].input-form-element {
   right: -100%;
   width: 300px;
   border-radius: 5px;
-  /* scale: 0; */
   transition: all 1s ease-in-out;
   box-shadow: 0 8px 16px 3px rgba(211, 211, 211, 0.575);
 }

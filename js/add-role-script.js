@@ -1,29 +1,52 @@
-var inputEmployeeSearch = document.querySelector('.assign-employees input[name="employee-search"]');
+var inputEmployeeSearch = document.querySelector('.assign-employees input[name="employeeSearch"]');
 function getEmployeeData() {
   return JSON.parse(localStorage.getItem("EmployeeData")) || [];
 }
+var employees = getEmployeeData();
+var role = {}
 function getRoles() {
   return JSON.parse(localStorage.getItem("RolesData")) || [];
 }
 function setEmployeeData(data) {
   localStorage.setItem("EmployeeData", JSON.stringify(data));
 }
+let index = window.location.search.slice(7);
+index ? editRole(index) : ""
+class Role {
+  constructor(roleName, department, description, location, employeesAssigned) {
+    this.roleName = roleName
+    this.department = department
+    this.description = description
+    this.location = location
+    this.employeesAssigned = employeesAssigned
+  }
+}
 function setRoles(data) {
   localStorage.setItem("RolesData", JSON.stringify(data));
 }
-var employees = getEmployeeData();
-var roles = getRoles();
 inputEmployeeSearch.addEventListener("keyup", (e) => {
   document.querySelector(".search-employee-data").style.display = "flex";
   let filterArray = [];
   if (e.target.value) {
     employees.forEach((element) => {
       let name = element.firstname + element.lastname;
-      if (name.toLowerCase().includes(e.target.value.toLowerCase()))
-        filterArray.push(element);
+      name.toLowerCase().includes(e.target.value.toLowerCase()) ? filterArray.push(element) : ""
     });
   }
   displayEmployee(filterArray);
+})
+inputEmployeeSearch.addEventListener("focus", (e) => {
+  document.querySelector(".search-employee-data").style.display = "flex";
+  let filterArray = [];
+  if (e.target.value) {
+    employees.forEach((element) => {
+      let name = element.firstname + element.lastname;
+      e.toLowerCase().includes(e.target.value.toLowerCase()) ? filterArray.push(element) : ""
+    }
+    )
+  }
+  displayEmployee(filterArray);
+  displayEmployeeRoleBubble
 })
 inputEmployeeSearch.addEventListener("blur", (e) => {
   if (!e.target.value) {
@@ -33,11 +56,10 @@ inputEmployeeSearch.addEventListener("blur", (e) => {
 function displayEmployee(data) {
   let empData = "";
   data.forEach((element) => {
-    empData += `
-  <label for="emp${element.empno}" class="employee-card">
+    empData += `<label for="emp${element.empno}" class="employee-card">
     <div  class="profile">
       <div class="profile-image">
-        <img src="${element.image ? element.image : "images/user-profile.jpg"}" width="23px" alt="profile" />
+        <img src="${element.image}" width="23px" alt="profile" />
       </div>
       <div class="name">${element.firstname + " " + element.lastname}</div>
     </div>
@@ -49,9 +71,7 @@ function displayEmployee(data) {
 function removeFromEmployeeBubble(empno) {
   let employee = document.querySelector(`.employee-card #emp${empno}`);
   employee ? (employee.checked = false) : "";
-  employees.forEach((element) => {
-    element.empno == empno ? (element.isCheckedRole = false) : "";
-  });
+  employees.forEach((element) => element.empno == empno ? (element.isCheckedRole = false) : "");
   displayEmployeeRoleBubble();
 }
 function displayEmployeeRoleBubble() {
@@ -61,10 +81,9 @@ function displayEmployeeRoleBubble() {
   employees.forEach((element) => {
     if (element.isCheckedRole) {
       flag = false;
-      employeeBubble.innerHTML += `
-        <div class="employee-card">
+      employeeBubble.innerHTML += `<div class="employee-card">
           <div>
-            <img src=${element.image ? element.image : "images/user-profile.jpg"} alt="profile" />
+            <img src=${element.image} alt="profile" />
             <div class="name">${element.firstname}</div>
           </div>
           <button onclick="removeFromEmployeeBubble(${element.empno})">x</button>
@@ -76,21 +95,12 @@ function displayEmployeeRoleBubble() {
   employeeBubble.style.width = flag ? "0" : "147px";
 }
 function addingRoleToEmployee(empno) {
-  employees.forEach((employee) => {
-    if (employee.empno == empno) {
-      document.querySelector(`.employee-card #emp${empno}`).checked
-        ? (employee.isCheckedRole = true)
-        : (employee.isCheckedRole = false);
-    }
-  });
+  employees.forEach((employee) => employee.empno == empno ? document.querySelector(`.employee-card #emp${empno}`).checked ? (employee.isCheckedRole = true) : (employee.isCheckedRole = false) : "")
   displayEmployeeRoleBubble();
 }
-let role = {}
 function getRoleData(value, key) {
   role[key] = value;
 }
-<<<<<<< Updated upstream
-=======
 function toastToggle(message) {
   document.querySelector(".toast").classList.toggle("toast-toggle");
   document.querySelector(".toast .message").innerText = message;
@@ -122,18 +132,15 @@ document.querySelector('#addrole').addEventListener('click', (e) => {
   let rolesData = getRoles();
   index ? rolesData[index] = roleData : rolesData.push(roleData);
   setRoles(rolesData)
-  toastToggle(index ? "Role Updated Successfully" : "Role Added Successfully");
+  let message = index ? "Role Updated Successfully" : "Role Added Successfully"
+  toastToggle(message);
   setTimeout(() => {
     toastToggle("");
     resetForm();
-    window.location = "roles.html"
   }, 1500);
 })
 function editRole(index) {
   let roleData = getRoles()[index]
-  if(!roleData){
-    window.location = "roles.html"
-  }
   document.querySelector('#addrole').innerHTML = "Update"
   document.querySelector('input[name="role"]').value = roleData.roleName;
   document.querySelector('select[name="department"]').value = roleData.department;
@@ -148,4 +155,3 @@ function editRole(index) {
   role = { ...roleData, 'role': roleData.roleName }
   displayEmployeeRoleBubble()
 }
->>>>>>> Stashed changes

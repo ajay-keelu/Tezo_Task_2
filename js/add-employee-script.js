@@ -7,10 +7,15 @@ function setEmployeeData(data) {
 function getEmployeeById(id) {
   return getEmployeeData().find((employee) => employee.empno == id);
 }
-let formEmployee = { status: "Active" };
-let mode = localStorage.getItem("mode") || "";
-let empid = localStorage.getItem("empid") || "";
-mode == "view" ? viewPage(empid) : mode == "edit" ? editPage(empid) : "";
+let urlData = window.location.search.slice(1);
+empid = urlData.slice(3)
+mode = localStorage.getItem('mode') || []
+var formEmployee = { status: "Active", image: "images/user-profile.jpg" }
+if ((mode == "view" || mode == "edit") && !empid) {
+  alert("Employee not Found")
+  window.location = "index.html";
+}
+mode == "view" && empid ? viewPage(empid) : mode == "edit" && empid ? editPage(empid) : ""
 let changeData = (value, name) => {
   formEmployee[name] = value;
 };
@@ -85,18 +90,14 @@ function validateEmployeeNumber(empno) {
   spanElement ? element.parentNode.removeChild(spanElement) : "";
   return true;
 }
-let imageChange = (imagedata) => {
-  let imageWrapper = document.querySelector(".left-wrapper .img-wrapper img");
-  let file = imagedata.files[0];
-  let reader = new FileReader(file);
-  reader.readAsDataURL(file);
+function imageChange(imagedata) {
+  let reader = new FileReader(imagedata.files[0]);
+  reader.readAsDataURL(imagedata.files[0]);
   reader.onload = () => {
-    imageWrapper.src = reader.result;
+    document.querySelector(".left-wrapper .img-wrapper img").src = reader.result;
     formEmployee["image"] = reader.result;
   };
-  reader.onerror = () => {
-    alert("Please upload the image again!");
-  };
+  reader.onerror = () => alert("Please upload the image again!");
 };
 function resetForm() {
   mode == "edit" ? window.location.reload() : "";
@@ -109,27 +110,19 @@ function resetForm() {
   }
 }
 let requiredFields = ["empno", "email", "firstname", "lastname", "joiningDate"];
-let addEmployee = document.querySelector(".form-add-employee");
-addEmployee.addEventListener("click", (e) => {
+document.querySelector(".form-add-employee").addEventListener("click", (e) => {
   e.preventDefault();
   let flag = false;
   for (let field of requiredFields) {
-    let spanElement = document.querySelector(
-      `.input-form-element+span[name="${field}"]`
-    );
-    let element = document.querySelector(
-      `.input-form-element[name="${field}"]`
-    );
+    let spanElement = document.querySelector(`.input-form-element+span[name="${field}"]`);
+    let element = document.querySelector(`.input-form-element[name="${field}"]`);
     if (!formEmployee[field]) {
       let span = document.createElement("span");
       span.setAttribute("name", field);
       if (!spanElement) {
         element.parentNode.appendChild(span);
         span.innerHTML = `<b class="exclamation"><b>!</b></b> <b style="text-transform:capitalize">${field}</b> field is required`;
-      } else {
-        spanElement.innerHTML = `<b class="exclamation"><b>!</b></b> <b style="text-transform:capitalize">${field}</b> field is required`;
-      }
-      flag = true;
+      } else spanElement.innerHTML = `<b class="exclamation"><b>!</b></b> <b style="text-transform:capitalize">${field}</b> field is required`; flag = true;
     } else {
       let val = true;
       if (field == "email") val = validateEmail(formEmployee["email"]);
@@ -149,13 +142,12 @@ addEmployee.addEventListener("click", (e) => {
   let employeeData = getEmployeeData();
   mode != "edit" ? employeeData.push(employee) : (employeeData = replaceEmployee(employeeData, formEmployee));
   setEmployeeData(employeeData);
-  formEmployee = { status: "Active" };
-  let message = mode != "edit" ? "Employee Added Successfully" : "Updated Successfully";
-  toastToggle(message);
+  formEmployee = { status: "Active", image: "images/user-profile.jpg" };
+  toastToggle(mode != "edit" ? "Employee Added Successfully" : "Updated Successfully");
   setTimeout(() => {
-    toastToggle(message);
+    toastToggle("");
+    mode == "edit" ? (localStorage.setItem('mode', 'view'), window.location.reload()) : ""
     resetForm();
-    mode == "edit" ? (localStorage.setItem("mode", "view"), window.location.reload()) : "";
   }, 1500);
 });
 function toastToggle(message) {
@@ -175,8 +167,12 @@ function replaceEmployee(employeeData, employee) {
 }
 function editPage(id) {
   let editEmployee = getEmployeeById(id);
+  if (!editEmployee) {
+    alert("Employee not Found")
+    window.location = "index.html"
+  }
   formEmployee = editEmployee;
-  document.querySelector(".left-wrapper .img-wrapper img").src = editEmployee.image ? editEmployee.image : "images/user-profile.jpg";
+  document.querySelector(".left-wrapper .img-wrapper img").src = editEmployee.image;
   document.querySelector(".employee-details > .title").innerText = "Edit Employee";
   document.querySelector(`input[name="empno"]`).value = editEmployee.empno;
   document.querySelector(`input[name="empno"]`).disabled = "true";
@@ -195,25 +191,31 @@ function editPage(id) {
 }
 function viewPage(id) {
   let viewEmployee = getEmployeeById(id);
+  if (!viewEmployee) {
+    alert("Employee not Found")
+    window.location = "index.html"
+  }
   let editOrDelete = document.querySelector("#editOrDelete");
-  let editButton = document.createElement("button");
-  let deleteButton = document.createElement("button");
-  editOrDelete.append(editButton, deleteButton);
-  editButton.innerText = "Edit";
-  deleteButton.innerText = "Delete";
-  editButton.classList.add("edit");
-  deleteButton.classList.add("delete");
-  editButton.addEventListener("click", (e) => {
-    localStorage.setItem("mode", "edit");
-  });
-  deleteButton.addEventListener("click", (e) => {
-    e.preventDefault();
+  let editButton = document.createElement('button')
+  editButton.classList.add('edit')
+  editButton.innerHTML = 'Edit'
+  editButton.addEventListener('click', (e) => {
+    e.preventDefault()
+    localStorage.setItem("mode", "edit")
+    window.location.reload()
+  })
+  let deleteButton = document.createElement('button')
+  deleteButton.classList.add('delete')
+  deleteButton.innerHTML = 'Delete'
+  deleteButton.addEventListener('click', (e) => {
+    e.preventDefault()
     let employees = getEmployeeData();
     employees = employees.filter((employee) => employee.empno != id);
     setEmployeeData(employees);
     window.location = "index.html";
-  });
-  document.querySelector(".left-wrapper .img-wrapper img").src = viewEmployee.image ? viewEmployee.image : "images/user-profile.jpg";
+  })
+  editOrDelete.append(editButton, deleteButton);
+  document.querySelector(".left-wrapper .img-wrapper img").src = viewEmployee.image
   document.querySelector(".employee-details > .title").innerText = "View Employee";
   document.querySelector(`input[name="empno"]`).value = viewEmployee.empno;
   document.querySelector(`input[name="empno"]`).disabled = "true";

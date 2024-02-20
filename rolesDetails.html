@@ -8,14 +8,13 @@
   <link rel="icon" href="images/favicon-logo.svg" type="image/svg" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/role-details-style.css" />
-  <link rel="stylesheet" href="css/roles-style.css" />
 </head>
 
 <body>
   <div class="container">
     <div class="sidebar">
       <div class="logo">
-        <a href="/" title="TEZO">
+        <a href="" title="TEZO">
           <img src="images/tezoLogo.png" height="35px" alt="logo" />
           <img src="images/tezoLogo.svg" alt="logo" />
         </a>
@@ -32,7 +31,7 @@
           </li>
           <li>
             <a title="Employees" href="index.html">
-              <img src="images/employees-black.svg" alt="employee" />
+              <img src="images/employees-black.svg" alt="Employees" />
               <span>Employees</span>
             </a>
           </li>
@@ -43,12 +42,12 @@
         <ul>
           <li>
             <a class="active" title="Roles" href="roles.html">
-              <img src="images/settings-outline.svg" height="20px" alt="role" />
+              <img src="images/settings-outline.svg" height="20px" alt="roles" />
               <span>Roles</span>
             </a>
           </li>
           <li>
-            <a title="Access rights" href="/">
+            <a title="User Roles" href="#">
               <img src="images/user.svg" alt="user" />
               <span>Access rights</span>
             </a>
@@ -69,7 +68,7 @@
         <div class="search-bar">
           <div class="logo">
             <a href="/" title="TEZO">
-              <img src="images/tezoLogo.png" height="35px" alt="logo" />
+              <img src="images/tezoLogo.svg" alt="logo" />
             </a>
           </div>
           <div class="mobile-view-wrapper">
@@ -90,7 +89,6 @@
                   <img src="images/tezoLogo.svg" alt="logo" />
                 </a>
                 <label for="mobile-sidebar">x</label>
-                <img src="images/handle.png" alt="direction" />
               </div>
               <section id="all">
                 <label class="title">ALL</label>
@@ -114,7 +112,7 @@
                 <ul>
                   <li>
                     <a class="active" title="Roles" href="roles.html" target="_self">
-                      <img src="images/settings-outline.svg" alt="roles" width="20px" />
+                      <img src="images/settings-outline.svg" width="20px" alt="roles" />
                       <span>Roles</span>
                     </a>
                   </li>
@@ -167,58 +165,38 @@
         </div>
         <div class="page-header">
           <div class="page page-left">
-            <h3>Roles</h3>
+            <h3>
+              <a href="roles.html">Roles</a>
+              <i>
+                <img src="images/chevron-right.svg" alt="right-arrow" />
+              </i>
+              Employees
+            </h3>
             <p>All the roles are configured here</p>
           </div>
           <div class="page page-right">
             <div class="add-employee">
-              <a href="addRoles.html">
+              <a href="addEmployee.html">
                 <img src="images/add.svg" alt="add" />
-                <span>add role</span>
+                <span> add employee </span>
               </a>
             </div>
           </div>
         </div>
-        <div class="filter-content">
-          <div class="filter-bar">
-            <form>
-              <div class="left-item">
-                <div class="filter">
-                  <span>Filter</span>
-                  <img src="images/filter-bar.png" alt="filter" />
-                </div>
-                <select name="department" id="" class="select-item department"
-                  onchange="filterChange(this.value,this.name)">
-                  <option value="">Department</option>
-                  <option value="Product Engineering"> Product Engineering </option>
-                  <option value="IT">IT</option>
-                  <option value="UIUX">UIUX</option>
-                </select>
-                <select name="location" id="" class="select-item location"
-                  onchange="filterChange(this.value,this.name)">
-                  <option value="">Location</option>
-                  <option value="Vijayawada">Vijayawada</option>
-                  <option value="Hyderabad">Hyderabad</option>
-                  <option value="Banglore">Banglore</option>
-                </select>
-              </div>
-              <div class="right-item" id="hideResetBtns">
-                <button type="reset" class="reset"
-                  onclick="filterChange('','location'),filterChange('','department')">Reset</button>
-                <button class="apply">Apply</button>
-              </div>
-            </form>
-          </div>
+        <div class="role-description">
+          <h4>Role Description</h4>
+          <p id="description"></p>
         </div>
       </div>
       <div class="scroll-item">
-        <div class="roles-items">
+        <div class="scrool-content">
+          <div class="role-all-profiles"></div>
         </div>
       </div>
     </div>
   </div>
   <script src="js/script.js"></script>
-  <script src="js/roles-script.js"></script>
+  <script src="js/roles-details-script.js"></script>
 </body>
 
 </html>

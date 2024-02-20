@@ -62,6 +62,13 @@
   cursor: pointer;
 }
 
+.filter-bar form {
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
 .roles-description .role-information {
   width: 100%;
   padding: 18px 0;
@@ -165,7 +172,11 @@
   cursor: pointer;
 }
 
-.view-more-employees .view a {
+.view-more-employees .view button {
   color: #4c4c4c;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
   text-decoration: none;
 }

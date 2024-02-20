@@ -10,6 +10,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  position: relative;
 }
 
 body {
@@ -827,7 +828,7 @@ input[id="dropdown-select"] {
 }
 
 .table-content .table-modifiers .delete-modifier button {
-  background: #f89191;
+  background: #f26060;
   color: #ffffff;
   padding: 8px 12px;
   border: none;
@@ -836,14 +837,10 @@ input[id="dropdown-select"] {
   transition: all 0.2s ease;
 }
 
-.table-content .table-modifiers .delete-modifier button[disabled]:hover {
+.table-content .table-modifiers .delete-modifier button[disabled] {
   cursor: not-allowed;
   background: #f89191;
   color: #ffffff;
-}
-
-.table-content .table-modifiers .delete-modifier button:hover {
-  background: #f26060;
 }
 
 .table-content .table-modifiers .delete-modifier img {

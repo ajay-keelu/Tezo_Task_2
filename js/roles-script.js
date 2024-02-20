@@ -30,14 +30,14 @@ function displayRoles(data) {
             <div class="right-item">
               <div class="image-container">
                     ${role.employeesAssigned.length > 4 ? (`<div class="top"> +${role.employeesAssigned.length - 4}</div>` +
-                      role.employeesAssigned.slice(0, 4).map(employee => {
-                        return `<div class="top">
-                                  <img src="${employee.image}" height="20px" alt="profile" />
-                                </div>`
-                      })) : role.employeesAssigned.map(employee => {
-                        return `<div class="top">
-                                  <img src="${employee.image}" height="20px" alt="profile" />
-                                </div>`})}
+        role.employeesAssigned.slice(0, 4).map(employee => {
+          return `<div class="top">
+                    <img src="${employee.image}" height="20px" alt="profile" />
+                  </div>`
+        })) : role.employeesAssigned.map(employee => {
+          return `<div class="top">
+                    <img src="${employee.image}" height="20px" alt="profile" />
+                  </div>`})}
               </div>
             </div>
           </div>

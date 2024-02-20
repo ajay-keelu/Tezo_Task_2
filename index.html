@@ -208,9 +208,7 @@
                 </select>
                 <select name="" id="" class="select-item department">
                   <option value="">Department</option>
-                  <option value="Product Engineering">
-                    Product Engineering
-                  </option>
+                  <option value="Product Engineering">Product Engineering</option>
                   <option value="IT">IT</option>
                   <option value="UIUX">UIUX</option>
                 </select>
@@ -233,13 +231,13 @@
           roles.
         </p>
         <div class="filter-buttons-wrapper filter-aplhabets">
-          <button onfocus="removeFilter(this,'focus')" onblur="removeFilter(this,'blur')">
+          <button onfocus="removeFilter(this,'focus')">
             <img src="images/filter.png" alt="filter" />
           </button>
           <div id="filterBtns"></div>
         </div>
         <div class="filter-content">
-          <form>
+          <form id="dropdownFilterForm">
             <div class="filter-bar">
               <div class="left-item">
                 <div class="filter">
@@ -251,7 +249,7 @@
                   <div class="dropdown-select">
                     <select name="status" class="select-item status" onchange="employeeDropdown(this.value,this.name)">
                       <option value="">Status</option>
-                      <option value="Active">Active</option>
+                      <option value="Active"> Active </option>
                       <option value="In Active">In Active</option>
                     </select>
                     <select name="location" onchange="employeeDropdown(this.value,this.name)"
@@ -265,13 +263,12 @@
                       class="select-item department">
                       <option value="">Department</option>
                       <option value="IT">IT</option>
-                      <option value="Product Engineering">Product Engg.</option>
                       <option value="UIUX">UIUX</option>
                     </select>
                   </div>
                 </div>
               </div>
-              <div class="right-item">
+              <div class="right-item" id="hideResetBtns">
                 <input type="reset" class="reset" onclick="removeEmployeeFilter()" />
                 <input type="button" onclick="applyEmployeeFilter()" value="Apply" class="apply" />
               </div>

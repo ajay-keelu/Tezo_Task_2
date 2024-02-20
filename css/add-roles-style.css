@@ -20,12 +20,14 @@
   align-items: flex-start;
   flex-direction: column;
   width: 30%;
+  margin: 10px 0;
 }
 
 .role-adder .role-detail label {
   font-size: 12px;
   padding: 5px 2px;
   font-weight: 600;
+  z-index: 3;
 }
 
 .role-adder .role-detail .input-form-element {
@@ -97,6 +99,7 @@ textarea.input-form-element {
   padding: 40px 60px 40px 0;
   justify-content: flex-end;
   gap: 15px;
+  z-index: 2;
 }
 
 .role-adder .search-employee-data {
@@ -127,10 +130,6 @@ textarea.input-form-element {
   display: none;
 }
 
-/* .role-adder .assign-employees .employee-bubble::-webkit-scrollbar-thumb, */
-/* .role-adder
-  .assign-employees
-  .employee-bubble::-webkit-scrollbar-thumb:horizontal, */
 .role-adder .search-employee-data::-webkit-scrollbar-thumb,
 .role-adder .search-employee-data::-webkit-scrollbar-thumb:horizontal {
   background-color: #ff9f9f;
@@ -230,4 +229,92 @@ textarea.input-form-element {
 
 .input-form-element:has(#employee-search:focus) {
   border: 2px solid #6cacff;
+}
+
+.input-form-element:has(+ span[error]) {
+  border: 2px solid #de350b
+}
+
+.role-adder span[error] {
+  display: flex !important;
+}
+
+.role-adder span {
+  display: none !important;
+  position: absolute;
+  bottom: -18px;
+  color: #de350b;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: fit-content;
+  padding-left: 5px;
+}
+
+.exclamation {
+  background: #de350b;
+  font-size: 8px;
+  transform: rotate(-45deg);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 8px;
+  aspect-ratio: 1;
+  border-radius: 0.8px;
+}
+
+.exclamation b {
+  transform: rotate(45deg);
+  color: #ffffff;
+  font-size: 8px;
+}
+
+.toast {
+  position: fixed;
+  z-index: 1111;
+  top: 80px;
+  background: rgb(56, 165, 56);
+  color: #fff;
+  height: 60px;
+  right: -100%;
+  width: 300px;
+  border-radius: 5px;
+  transition: all 1s ease-in-out;
+  box-shadow: 0 8px 16px 3px rgba(211, 211, 211, 0.575);
+}
+
+.toast.toast-toggle {
+  right: 30px;
+}
+
+.toast .toast-success {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  gap: 10px;
+}
+
+.toast .toast-success img {
+  height: 45px;
+}
+
+.toast .toast-success button {
+  position: absolute;
+  right: 0;
+  background: rgb(49, 250, 89);
+  border: 1px solid rgb(13, 255, 0);
+  padding: 0px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 20px;
+  top: 0;
+}
+
+.toast .toast-success i {
+  font-size: 35px;
 }
